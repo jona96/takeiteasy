@@ -78,6 +78,14 @@ class Board:
         if column in ['B', 'D']: return 4
         if column in ['C']: return 5
 
+    @staticmethod
+    def all_rows(column: str) -> list[int]:
+        return range(1, Board.max_row(column) + 1)
+
+    @staticmethod
+    def all_columns() -> list[str]:
+        return ['A', 'B', 'C', 'D', 'E']
+
     def place_tile(self, tile: Tile, position: str):
         assert len(position) == 2
         column = position[0]
@@ -85,8 +93,8 @@ class Board:
         assert row.isnumeric()
         row = int(row)
         column = column.upper()
-        assert column in ['A', 'B', 'C', 'D', 'E']
-        assert row in range(1, Board.max_row(column) + 1)
+        assert column in Board.all_columns()
+        assert row in Board.all_rows()
         
         index = f'{column}{row}'
         assert index not in self.tiles.keys()
@@ -137,18 +145,13 @@ class Board:
             n1 = []
             for row in range(1, Board.max_row(column) + 1):
                 index = f'{column}{row}'
-                if index not in self.tiles.keys(): # no tile set
-                    n1.append(0)
-                else:
-                    n1.append(self.tiles[index].n1)
-            
-            if all_items_equal(n1):
-                return sum(n1)
-            else:
-                return 0
+                n1.append(self.tiles.get(index, Tile(0, 0, 0)).n1) # 0-tile is default
+            return sum(n1) if all_items_equal(n1) else 0
         
-        
-        return sum([column_score(column) for column in ['A', 'B', 'C', 'D', 'E']])
+        score = 0
+        for column in Board.all_columns:
+            score += column_score(column)
+        return score
 
 if __name__ == '__main__':
     tiles = Tiles()
