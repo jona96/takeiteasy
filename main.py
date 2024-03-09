@@ -36,40 +36,54 @@ class Tiles:
 
 class Board:
 
-    def __init__(self):
-        pass
+    LAYOUT = """
+    ****************************************************************
+    *                               C                              *
+    *                            _______                           *
+    *                      B    /       \    D                     *
+    *                   _______/         \_______                  *
+    *             A    /       \         /       \    E            *
+    *          _______/         \_______/         \_______         *
+    *         /       \         /       \         /       \        *
+    *        /         \_______/         \_______/         \       *
+    *        \         /       \         /       \         /       *
+    *      1  \_______/         \_______/         \_______/  1     *
+    *         /       \         /       \         /       \        *
+    *        /         \_______/         \_______/         \       *
+    *        \         /       \         /       \         /       *
+    *      2  \_______/         \_______/         \_______/  2     *
+    *         /       \         /       \         /       \        *
+    *        /         \_______/         \_______/         \       *
+    *        \         /       \         /       \         /       *
+    *      3  \_______/         \_______/         \_______/  3     *
+    *                 \         /       \         /                *
+    *               4  \_______/         \_______/  4              *
+    *                          \         /                         *
+    *                        5  \_______/                          *
+    *                                                              *
+    ****************************************************************
+"""
 
-    def place_tile(self, tile: Tile):
-        pass
+    def __init__(self):
+        self.tiles = {}  # layout 'A1' : Tile(1, 2, 3)
+
+    def place_tile(self, tile: Tile, column: str, row: int):
+        column = column.upper()
+        assert column in ['A', 'B', 'C', 'D', 'E']
+        if column in ['A', 'E']: assert row in [1, 2, 3]
+        if column in ['B', 'D']: assert row in [1, 2, 3, 4]
+        if column in ['C']: assert row in [1, 2, 3, 4, 5]
+        
+        index = f'{column}{row}'
+        assert index not in self.tiles.keys()
+        
+        self.tiles[index] = tile
+        
+        self.draw()
 
     def draw(self):
-        print("""
-    *******************************************************
-    *                      _______                        *
-    *                     /       \                       *
-    *             _______/    1    \_______               *
-    *            /       \  3   2  /       \              *
-    *    _______/    1    \_______/    1    \_______      *
-    *   /       \  3   2  /       \  3   2  /       \     *
-    *  /    1    \_______/    1    \_______/    1    \    *
-    *  \  3   2  /       \  3   2  /       \  3   2  /    *
-    *   \_______/    1    \_______/    1    \_______/     *
-    *   /       \  3   2  /       \  3   2  /       \     *
-    *  /    1    \_______/    1    \_______/    1    \    *
-    *  \  3   2  /       \  3   2  /       \  3   2  /    *
-    *   \_______/    1    \_______/    1    \_______/     *
-    *   /       \  3   2  /       \  3   2  /       \     *
-    *  /    1    \_______/    1    \_______/    1    \    *
-    *  \  3   2  /       \  3   2  /       \  3   2  /    *
-    *   \_______/    1    \_______/    1    \_______/     *
-    *           \  3   2  /       \  3   2  /             *
-    *            \_______/    1    \_______/              *
-    *                    \  3   2  /                      *
-    *                     \_______/                       *
-    *                                                     *
-    *******************************************************
-""")
-
+        print(self.LAYOUT)
+        print(self.tiles)
 
 
 if __name__ == '__main__':
@@ -77,9 +91,7 @@ if __name__ == '__main__':
 
     board = Board()
     
-    board.place_tile(tiles.pick_tile())
-    board.place_tile(tiles.pick_tile())
-    board.place_tile(tiles.pick_tile())
-    board.place_tile(tiles.pick_tile())
+    board.place_tile(tiles.pick_tile(), 'A', 1)
+    board.place_tile(tiles.pick_tile(), 'D', 4)
 
     board.draw()
