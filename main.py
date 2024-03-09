@@ -1,6 +1,6 @@
 import random
 
-class Game:
+class Tiles:
 
     _all_tiles = [
         (1, 2, 3), (1, 2, 4), (1, 2, 8),
@@ -15,7 +15,7 @@ class Game:
     ]
 
     def __init__(self):
-        self.left_tiles = Game._all_tiles
+        self.left_tiles = Tiles._all_tiles
 
     def pick_tile(self):
         if not any(self.left_tiles):
@@ -25,7 +25,7 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game()
+    game = Tiles()
 
     print(game.pick_tile())
     print(game.pick_tile())
