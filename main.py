@@ -1,6 +1,10 @@
 import random
 
 
+def all_items_equal(l:list) -> bool:
+    assert isinstance(l, list)
+    return len(set(l)) == 1
+
 class Tile:
     def __init__(self, n1, n2, n3):
         self.n1 = n1
@@ -67,6 +71,13 @@ class Board:
     def __init__(self):
         self.tiles = {}  # layout 'A1' : Tile(1, 2, 3)
 
+    @staticmethod
+    def max_row(column: str) -> int:
+        assert column in ['A','B','C','D','E']
+        if column in ['A', 'E']: return 3
+        if column in ['B', 'D']: return 4
+        if column in ['C']: return 5
+
     def place_tile(self, tile: Tile, position: str):
         assert len(position) == 2
         column = position[0]
@@ -75,9 +86,7 @@ class Board:
         row = int(row)
         column = column.upper()
         assert column in ['A', 'B', 'C', 'D', 'E']
-        if column in ['A', 'E']: assert row in [1, 2, 3]
-        if column in ['B', 'D']: assert row in [1, 2, 3, 4]
-        if column in ['C']: assert row in [1, 2, 3, 4, 5]
+        assert row in range(1, Board.max_row(column) + 1)
         
         index = f'{column}{row}'
         assert index not in self.tiles.keys()
@@ -124,7 +133,22 @@ class Board:
         print(f'score: {self.score()}')
 
     def score(self) -> int:
-        return sum([tile.n1 + tile.n2 + tile.n3 for tile in self.tiles.values()])
+        def column_score(column) -> int:
+            n1 = []
+            for row in range(1, Board.max_row(column) + 1):
+                index = f'{column}{row}'
+                if index not in self.tiles.keys(): # no tile set
+                    n1.append(0)
+                else:
+                    n1.append(self.tiles[index].n1)
+            
+            if all_items_equal(n1):
+                return sum(n1)
+            else:
+                return 0
+        
+        
+        return sum([column_score(column) for column in ['A', 'B', 'C', 'D', 'E']])
 
 if __name__ == '__main__':
     tiles = Tiles()
