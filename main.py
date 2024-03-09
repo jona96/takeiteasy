@@ -1,17 +1,27 @@
 import random
 
+
+class Tile:
+    def __init__(self, n1, n2, n3):
+        self.n1 = n1
+        self.n2 = n2
+        self.n3 = n3
+
+    def __repr__(self) -> str:
+        return f'({self.n1},{self.n2},{self.n3})'
+    
 class Tiles:
 
     _all_tiles = [
-        (1, 2, 3), (1, 2, 4), (1, 2, 8),
-        (1, 6, 3), (1, 6, 4), (1, 6, 8),
-        (1, 7, 3), (1, 7, 4), (1, 7, 8),
-        (5, 2, 3), (5, 2, 4), (5, 2, 8),
-        (5, 6, 3), (5, 6, 4), (5, 6, 8),
-        (5, 7, 3), (5, 7, 4), (5, 7, 8),
-        (9, 2, 3), (9, 2, 4), (9, 2, 8),
-        (9, 6, 3), (9, 6, 4), (9, 6, 8),
-        (9, 7, 3), (9, 7, 4), (9, 7, 8),
+        Tile(1, 2, 3), Tile(1, 2, 4), Tile(1, 2, 8),
+        Tile(1, 6, 3), Tile(1, 6, 4), Tile(1, 6, 8),
+        Tile(1, 7, 3), Tile(1, 7, 4), Tile(1, 7, 8),
+        Tile(5, 2, 3), Tile(5, 2, 4), Tile(5, 2, 8),
+        Tile(5, 6, 3), Tile(5, 6, 4), Tile(5, 6, 8),
+        Tile(5, 7, 3), Tile(5, 7, 4), Tile(5, 7, 8),
+        Tile(9, 2, 3), Tile(9, 2, 4), Tile(9, 2, 8),
+        Tile(9, 6, 3), Tile(9, 6, 4), Tile(9, 6, 8),
+        Tile(9, 7, 3), Tile(9, 7, 4), Tile(9, 7, 8),
     ]
 
     def __init__(self):
@@ -24,36 +34,52 @@ class Tiles:
         return self.left_tiles.pop(index_of_tile)
 
 
-if __name__ == '__main__':
-    game = Tiles()
+class Board:
 
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
-    print(game.pick_tile())
+    def __init__(self):
+        pass
+
+    def place_tile(self, tile: Tile):
+        pass
+
+    def draw(self):
+        print("""
+    *******************************************************
+    *                      _______                        *
+    *                     /       \                       *
+    *             _______/    1    \_______               *
+    *            /       \  3   2  /       \              *
+    *    _______/    1    \_______/    1    \_______      *
+    *   /       \  3   2  /       \  3   2  /       \     *
+    *  /    1    \_______/    1    \_______/    1    \    *
+    *  \  3   2  /       \  3   2  /       \  3   2  /    *
+    *   \_______/    1    \_______/    1    \_______/     *
+    *   /       \  3   2  /       \  3   2  /       \     *
+    *  /    1    \_______/    1    \_______/    1    \    *
+    *  \  3   2  /       \  3   2  /       \  3   2  /    *
+    *   \_______/    1    \_______/    1    \_______/     *
+    *   /       \  3   2  /       \  3   2  /       \     *
+    *  /    1    \_______/    1    \_______/    1    \    *
+    *  \  3   2  /       \  3   2  /       \  3   2  /    *
+    *   \_______/    1    \_______/    1    \_______/     *
+    *           \  3   2  /       \  3   2  /             *
+    *            \_______/    1    \_______/              *
+    *                    \  3   2  /                      *
+    *                     \_______/                       *
+    *                                                     *
+    *******************************************************
+""")
+
+
+
+if __name__ == '__main__':
+    tiles = Tiles()
+
+    board = Board()
+    
+    board.place_tile(tiles.pick_tile())
+    board.place_tile(tiles.pick_tile())
+    board.place_tile(tiles.pick_tile())
+    board.place_tile(tiles.pick_tile())
+
+    board.draw()
