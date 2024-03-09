@@ -89,14 +89,17 @@ class Board:
     def draw(self):
         print(self.LAYOUT)
         print(self.tiles)
+        print(f'score: {self.score()}')
 
+    def score(self) -> int:
+        return sum([tile.n1 + tile.n2 + tile.n3 for tile in self.tiles.values()])
 
 if __name__ == '__main__':
     tiles = Tiles()
 
     board = Board()
-    
-    print(board.LAYOUT)
+    board.draw()
+
     for _ in range(19):
         tile = tiles.pick_tile()
         board.place_tile(tile, input(f'where to place {tile}? '))
