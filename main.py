@@ -67,7 +67,12 @@ class Board:
     def __init__(self):
         self.tiles = {}  # layout 'A1' : Tile(1, 2, 3)
 
-    def place_tile(self, tile: Tile, column: str, row: int):
+    def place_tile(self, tile: Tile, position: str):
+        assert len(position) == 2
+        column = position[0]
+        row = position[1]
+        assert row.isnumeric()
+        row = int(row)
         column = column.upper()
         assert column in ['A', 'B', 'C', 'D', 'E']
         if column in ['A', 'E']: assert row in [1, 2, 3]
@@ -91,7 +96,7 @@ if __name__ == '__main__':
 
     board = Board()
     
-    board.place_tile(tiles.pick_tile(), 'A', 1)
-    board.place_tile(tiles.pick_tile(), 'D', 4)
-
-    board.draw()
+    print(board.LAYOUT)
+    for _ in range(19):
+        tile = tiles.pick_tile()
+        board.place_tile(tile, input(f'where to place {tile}? '))
