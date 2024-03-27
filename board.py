@@ -72,7 +72,6 @@ class Board:
 
     def __init__(self):
         self._tiles = {}  # layout BoardPosition('A', 1) : Tile(1, 2, 3)
-        self._tiles_old = {}  # layout 'A1' : Tile(1, 2, 3)
 
     @staticmethod
     def max_row(column: str) -> int:
