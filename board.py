@@ -272,4 +272,7 @@ class Board:
         return score
 
     def tiles(self) -> dict[str, Tile]:
+        return self._tiles
+
+    def tiles_old(self) -> dict[str, Tile]:
         return self._tiles_old

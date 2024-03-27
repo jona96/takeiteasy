@@ -42,7 +42,7 @@ class Game:
         
         self.current_tile = self.tiles.pick_tile()
         
-        if len(self.board.tiles()) == 19:
+        if len(self.board.tiles_old()) == 19:
             self._finished = True
 
     def finished(self) -> bool:
