@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from tiles import Tile
 
 
@@ -5,6 +6,13 @@ def all_items_equal(l:list) -> bool:
     assert isinstance(l, list)
     return len(set(l)) == 1
 
+@dataclass
+class BoardPosition:
+    column: str
+    row: int
+    
+    def __repr__(self) -> str:
+        return f'{self.column}{self.row}'
 
 class Board:
 
@@ -35,6 +43,28 @@ class Board:
     *                                                              *
     ****************************************************************
 """
+
+    ALL_POSITIONS = [
+        BoardPosition('A', 1),
+        BoardPosition('A', 2),
+        BoardPosition('A', 3),
+        BoardPosition('B', 1),
+        BoardPosition('B', 2),
+        BoardPosition('B', 3),
+        BoardPosition('B', 4),
+        BoardPosition('C', 1),
+        BoardPosition('C', 2),
+        BoardPosition('C', 3),
+        BoardPosition('C', 4),
+        BoardPosition('C', 5),
+        BoardPosition('D', 1),
+        BoardPosition('D', 2),
+        BoardPosition('D', 3),
+        BoardPosition('D', 4),
+        BoardPosition('E', 1),
+        BoardPosition('E', 2),
+        BoardPosition('E', 3),
+    ]
 
     def __init__(self):
         self._tiles = {}  # layout 'A1' : Tile(1, 2, 3)
