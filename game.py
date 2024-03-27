@@ -34,16 +34,5 @@ class Game:
         if len(self.board.tiles()) == 19:
             self._finished = True
     
-    def place_tile_old(self, position: str):
-        if self.finished(): return
-        try:
-            self.board.place_tile_old(self.current_tile, position)
-        except Exception as e: raise GameCannotPlaceTileException(e)
-        
-        self.current_tile = self.tiles.pick_tile()
-        
-        if len(self.board.tiles_old()) == 19:
-            self._finished = True
-
     def finished(self) -> bool:
         return self._finished
