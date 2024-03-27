@@ -24,10 +24,13 @@ class Tiles:
     ]
 
     def __init__(self):
-        self.left_tiles = Tiles._all_tiles
+        self._left_tiles = Tiles._all_tiles
 
     def pick_tile(self):
-        if not any(self.left_tiles):
+        if not any(self._left_tiles):
             return None
-        index_of_tile = int(random.random() * len(self.left_tiles))
-        return self.left_tiles.pop(index_of_tile)
+        index_of_tile = int(random.random() * len(self._left_tiles))
+        return self._left_tiles.pop(index_of_tile)
+
+    def left_tiles(self) -> list[Tile]:
+        return self._left_tiles
