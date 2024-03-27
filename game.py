@@ -26,7 +26,7 @@ class Game:
     def place_tile(self, position: str):
         if self.finished(): return
         try:
-            self.board.place_tile(self.current_tile, position)
+            self.board.place_tile_old(self.current_tile, position)
         except Exception as e: raise GameCannotPlaceTileException(e)
         
         self.current_tile = self.tiles.pick_tile()
