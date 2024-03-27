@@ -78,8 +78,6 @@ class Board:
         assert position not in self._tiles.keys()
         
         self._tiles[position] = tile
-        
-        self.draw()
 
     def draw(self):
 

@@ -16,7 +16,7 @@ class Game:
     def start(self):
         self.started = True
         self.current_tile = self.tiles.pick_tile()
-        print(self.board.draw())
+        self.board.draw()
 
     def get_tile(self) -> Tile:
         if not self.started:
@@ -27,6 +27,7 @@ class Game:
         if self.finished(): return
         try:
             self.board.place_tile(self.current_tile, position)
+            self.board.draw()
         except Exception as e: raise GameCannotPlaceTileException(e)
         
         self.current_tile = self.tiles.pick_tile()
