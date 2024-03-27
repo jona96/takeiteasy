@@ -16,7 +16,7 @@ class Game:
     def start(self):
         self.started = True
         self.current_tile = self.tiles.pick_tile()
-        print(self.board.draw())
+        print(self.board.draw_old())
 
     def get_tile(self) -> Tile:
         if not self.started:

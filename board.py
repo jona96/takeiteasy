@@ -95,7 +95,7 @@ class Board:
         
         self._tiles[position] = tile
         
-        self.draw()
+        self.draw_old()
 
     def place_tile_old(self, tile: Tile, position: str):
         assert len(position) == 2
@@ -112,9 +112,9 @@ class Board:
         
         self._tiles_old[index] = tile
         
-        self.draw()
+        self.draw_old()
 
-    def draw(self):
+    def draw_old(self):
 
         def position_in_layout(index: str, nx: int) -> int:
             assert nx in ['n1', 'n2', 'n3']
