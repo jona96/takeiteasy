@@ -141,7 +141,7 @@ class Board:
             return text[:index] + str(new_character) + text[index + 1:]
         
         board_string = self.LAYOUT
-        for board_position, tile in self._tiles_old.items():
+        for board_position, tile in self._tiles.items():
             board_string = replace_character(board_string, position_in_layout(board_position, 'n1'), tile.n1)
             board_string = replace_character(board_string, position_in_layout(board_position, 'n2'), tile.n2)
             board_string = replace_character(board_string, position_in_layout(board_position, 'n3'), tile.n3)
