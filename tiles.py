@@ -11,7 +11,7 @@ class Tile:
     
 class Tiles:
 
-    _all_tiles = [
+    ALL_TILES = [
         Tile(1, 2, 3), Tile(1, 2, 4), Tile(1, 2, 8),
         Tile(1, 6, 3), Tile(1, 6, 4), Tile(1, 6, 8),
         Tile(1, 7, 3), Tile(1, 7, 4), Tile(1, 7, 8),
@@ -24,7 +24,7 @@ class Tiles:
     ]
 
     def __init__(self):
-        self._left_tiles = Tiles._all_tiles
+        self._left_tiles = Tiles.ALL_TILES
 
     def pick_tile(self):
         if not any(self._left_tiles):
