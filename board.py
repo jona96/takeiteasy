@@ -73,21 +73,6 @@ class Board:
     def __init__(self):
         self._tiles = {}  # layout BoardPosition('A', 1) : Tile(1, 2, 3)
 
-    @staticmethod
-    def max_row(column: str) -> int:
-        assert column in ['A','B','C','D','E']
-        if column in ['A', 'E']: return 3
-        if column in ['B', 'D']: return 4
-        if column in ['C']: return 5
-
-    @staticmethod
-    def all_rows(column: str) -> list[int]:
-        return range(1, Board.max_row(column) + 1)
-
-    @staticmethod
-    def all_columns() -> list[str]:
-        return ['A', 'B', 'C', 'D', 'E']
-
     def place_tile(self, tile: Tile, position: BoardPosition):
         assert position in Board.ALL_POSITIONS
         assert position not in self._tiles.keys()
