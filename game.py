@@ -1,10 +1,8 @@
 from board import Board
 from tiles import Tile, Tiles
 
-class GameNotRunningException(Exception):
-    pass
-class GameCannotPlaceTileException(Exception):
-    pass
+class GameNotRunningException(Exception): pass
+class GameCannotPlaceTileException(Exception): pass
 
 class Game:
     
