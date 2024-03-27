@@ -97,23 +97,6 @@ class Board:
         
         self.draw()
 
-    def place_tile_old(self, tile: Tile, position: str):
-        assert len(position) == 2
-        column = position[0]
-        row = position[1]
-        assert row.isnumeric()
-        row = int(row)
-        column = column.upper()
-        assert column in Board.all_columns()
-        assert row in Board.all_rows(column)
-        
-        index = f'{column}{row}'
-        assert index not in self._tiles_old.keys()
-        
-        self._tiles_old[index] = tile
-        
-        self.draw_old()
-
     def draw(self):
 
         def position_in_layout(board_position: BoardPosition, nx: int) -> int:
