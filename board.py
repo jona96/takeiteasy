@@ -146,7 +146,7 @@ class Board:
             board_string = replace_character(board_string, position_in_layout(board_position, 'n2'), tile.n2)
             board_string = replace_character(board_string, position_in_layout(board_position, 'n3'), tile.n3)
         print(board_string)
-        print(f'score: {self.score_old()}')
+        print(f'score: {self.score()}')
 
     def draw_old(self):
 
