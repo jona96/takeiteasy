@@ -131,47 +131,60 @@ class Board:
         print(f'score: {self.score()}')
 
     def score(self) -> int:
-        def column_score(column) -> int:
-            n1 = []
-            for row in Board.all_rows(column):
-                board_position = BoardPosition(column, row)
-                n1.append(self._tiles.get(board_position, Tile(0, 0, 0)).n1) # 0-tile is default
-            return sum(n1) if all_items_equal(n1) else 0
-
-        def row_from_left_score(row) -> int:
-            indices_for_row_from_left = {
-                1: ['A1', 'B1', 'C1'],
-                2: ['A2', 'B2', 'C2', 'D1'],
-                3: ['A3', 'B3', 'C3', 'D2', 'E1'],
-                4: [      'B4', 'C4', 'D3', 'E2'],
-                5: [            'C5', 'D4', 'E3'],
-            }
-            n2 = []
-            for board_position in [BoardPosition.from_string(s) for s in indices_for_row_from_left[row]]:
-                n2.append(self._tiles.get(board_position, Tile(0, 0, 0)).n2) # 0-tile is default
-            return sum(n2) if all_items_equal(n2) else 0
-        
-
-        def row_from_right_score(row) -> int:
-            indices_for_row_from_left = {
-                1: [            'C1', 'D1', 'E1'],
-                2: [      'B1', 'C2', 'D2', 'E2'],
-                3: ['A1', 'B2', 'C3', 'D3', 'E3'],
-                4: ['A2', 'B3', 'C4', 'D4'],
-                5: ['A3', 'B4', 'C5'],
-            }
-            n3 = []
-            for board_position in [BoardPosition.from_string(s) for s in indices_for_row_from_left[row]]:
-                n3.append(self._tiles.get(board_position, Tile(0, 0, 0)).n3) # 0-tile is default
-            return sum(n3) if all_items_equal(n3) else 0
+        score_groups = {
+            'n1' : [
+                [ BoardPosition('A', 1), BoardPosition('A', 2), BoardPosition('A', 3) ],
+                [ BoardPosition('B', 1), BoardPosition('B', 2), BoardPosition('B', 3), BoardPosition('B', 4) ],
+                [ BoardPosition('C', 1), BoardPosition('C', 2), BoardPosition('C', 3), BoardPosition('C', 4), BoardPosition('C', 5) ],
+                [ BoardPosition('D', 1), BoardPosition('D', 2), BoardPosition('D', 3), BoardPosition('D', 4) ],
+                [ BoardPosition('E', 1), BoardPosition('E', 2), BoardPosition('E', 3) ],
+            ],
+            'n2' : [
+                [ BoardPosition('A', 1), BoardPosition('B', 1), BoardPosition('C', 1) ],
+                [ BoardPosition('A', 2), BoardPosition('B', 2), BoardPosition('C', 2), BoardPosition('D', 1) ],
+                [ BoardPosition('A', 3), BoardPosition('B', 3), BoardPosition('C', 3), BoardPosition('D', 2), BoardPosition('E', 1) ],
+                [                        BoardPosition('D', 4), BoardPosition('C', 4), BoardPosition('D', 3), BoardPosition('E', 2) ],
+                [                                               BoardPosition('C', 5), BoardPosition('D', 4), BoardPosition('E', 3) ],
+            ],
+            'n3' : [
+                [                                               BoardPosition('C', 1), BoardPosition('D', 1), BoardPosition('E', 1) ],
+                [                        BoardPosition('B', 1), BoardPosition('C', 2), BoardPosition('D', 2), BoardPosition('E', 2) ],
+                [ BoardPosition('A', 1), BoardPosition('B', 2), BoardPosition('C', 3), BoardPosition('D', 3), BoardPosition('E', 3) ],
+                [ BoardPosition('A', 2), BoardPosition('B', 3), BoardPosition('C', 4), BoardPosition('D', 4) ],
+                [ BoardPosition('A', 3), BoardPosition('B', 4), BoardPosition('C', 5) ],
+            ],
+        }
         
         score = 0
-        for column in Board.all_columns():
-            score += column_score(column)
-        for row in [1, 2, 3, 4, 5]:
-            score += row_from_left_score(row)
-            score += row_from_right_score(row)
+        
+        for group in score_groups['n1']:
+            number_list = []
+            for board_position in group:
+                if board_position in self.tiles().keys():
+                    number_list.append(self.tiles()[board_position].n1)
+                else:
+                    number_list.append(Tile(0, 0, 0))    # no tile set
+            score += sum(number_list) if all_items_equal(number_list) else 0
+                
+        for group in score_groups['n2']:
+            number_list = []
+            for board_position in group:
+                if board_position in self.tiles().keys():
+                    number_list.append(self.tiles()[board_position].n2)
+                else:
+                    number_list.append(Tile(0, 0, 0))    # no tile set
+            score += sum(number_list) if all_items_equal(number_list) else 0
+                
+        for group in score_groups['n3']:
+            number_list = []
+            for board_position in group:
+                if board_position in self.tiles().keys():
+                    number_list.append(self.tiles()[board_position].n3)
+                else:
+                    number_list.append(Tile(0, 0, 0))    # no tile set
+            score += sum(number_list) if all_items_equal(number_list) else 0
+        
         return score
-
+                
     def tiles(self) -> dict[str, Tile]:
         return self._tiles
