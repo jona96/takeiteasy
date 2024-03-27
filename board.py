@@ -114,6 +114,40 @@ class Board:
         
         self.draw_old()
 
+    def draw(self):
+
+        def position_in_layout(board_position: BoardPosition, nx: int) -> int:
+            assert nx in ['n1', 'n2', 'n3']
+            
+            characters_per_line = 69
+            lines_per_row = 4
+            
+            column_offset = {
+                'A' : 571,
+                'B' : 442,
+                'C' : 313,
+                'D' : 460,
+                'E' : 607,
+            }
+            
+            n_offset = {
+                'n1' : 0,
+                'n2' : 67,
+                'n3' : 71
+            }
+            
+            return column_offset[board_position.column] + n_offset[nx] + (board_position.row - 1) * characters_per_line * lines_per_row
+        def replace_character(text: str, index: int, new_character: str) -> str:
+            return text[:index] + str(new_character) + text[index + 1:]
+        
+        board_string = self.LAYOUT
+        for board_position, tile in self._tiles_old.items():
+            board_string = replace_character(board_string, position_in_layout(board_position, 'n1'), tile.n1)
+            board_string = replace_character(board_string, position_in_layout(board_position, 'n2'), tile.n2)
+            board_string = replace_character(board_string, position_in_layout(board_position, 'n3'), tile.n3)
+        print(board_string)
+        print(f'score: {self.score()}')
+
     def draw_old(self):
 
         def position_in_layout(index: str, nx: int) -> int:
