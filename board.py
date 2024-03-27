@@ -154,36 +154,18 @@ class Board:
                 [ BoardPosition('A', 3), BoardPosition('B', 4), BoardPosition('C', 5) ],
             ],
         }
-        
+
         score = 0
-        
-        for group in score_groups['n1']:
-            number_list = []
-            for board_position in group:
-                if board_position in self.tiles().keys():
-                    number_list.append(self.tiles()[board_position].n1)
-                else:
-                    number_list.append(Tile(0, 0, 0))    # no tile set
-            score += sum(number_list) if all_items_equal(number_list) else 0
-                
-        for group in score_groups['n2']:
-            number_list = []
-            for board_position in group:
-                if board_position in self.tiles().keys():
-                    number_list.append(self.tiles()[board_position].n2)
-                else:
-                    number_list.append(Tile(0, 0, 0))    # no tile set
-            score += sum(number_list) if all_items_equal(number_list) else 0
-                
-        for group in score_groups['n3']:
-            number_list = []
-            for board_position in group:
-                if board_position in self.tiles().keys():
-                    number_list.append(self.tiles()[board_position].n3)
-                else:
-                    number_list.append(Tile(0, 0, 0))    # no tile set
-            score += sum(number_list) if all_items_equal(number_list) else 0
-        
+
+        for nx in ['n1', 'n2', 'n3']:
+            for group in score_groups[nx]:
+                number_list = []
+                for board_position in group:
+                    tile = self.tiles().get(board_position, Tile(0, 0, 0)) # 0-Tile if no tile is set
+                    number = getattr(tile, nx)
+                    number_list.append(number)
+                score += sum(number_list) if all_items_equal(number_list) else 0
+
         return score
                 
     def tiles(self) -> dict[str, Tile]:
