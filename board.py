@@ -95,7 +95,7 @@ class Board:
         
         self._tiles[position] = tile
         
-        self.draw_old()
+        self.draw()
 
     def place_tile_old(self, tile: Tile, position: str):
         assert len(position) == 2
