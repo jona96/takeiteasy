@@ -5,13 +5,15 @@ import random
 
 class AI:
     
-    def run(self, board: Board, tile: Tile) -> BoardPosition:
+    def _random_pick(self, board: Board, tile: Tile) -> BoardPosition:
         position = random.choice(board.ALL_POSITIONS)
         if position in board.tiles().keys():
             return self.run(board, tile)
         else:
             return position
-    
+        
+    def run(self, board: Board, tile: Tile) -> BoardPosition:
+        return self._random_pick(board, tile)
 
 if __name__ == '__main__':
     from game import Game
