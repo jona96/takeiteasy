@@ -6,13 +6,17 @@ def all_items_equal(l:list) -> bool:
     assert isinstance(l, list)
     return len(set(l)) == 1
 
-@dataclass
+@dataclass(frozen=True)
 class BoardPosition:
     column: str
     row: int
     
     def __repr__(self) -> str:
         return f'{self.column}{self.row}'
+
+    @classmethod
+    def from_string(cls, position: str):
+        return cls(position[0], int(position[1]))
 
 class Board:
 
@@ -67,7 +71,8 @@ class Board:
     ]
 
     def __init__(self):
-        self._tiles = {}  # layout 'A1' : Tile(1, 2, 3)
+        self._tiles = {}  # layout BoardPosition('A', 1) : Tile(1, 2, 3)
+        self._tiles_old = {}  # layout 'A1' : Tile(1, 2, 3)
 
     @staticmethod
     def max_row(column: str) -> int:
@@ -103,9 +108,9 @@ class Board:
         assert row in Board.all_rows(column)
         
         index = f'{column}{row}'
-        assert index not in self._tiles.keys()
+        assert index not in self._tiles_old.keys()
         
-        self._tiles[index] = tile
+        self._tiles_old[index] = tile
         
         self.draw()
 
@@ -139,7 +144,7 @@ class Board:
             return text[:index] + str(new_character) + text[index + 1:]
         
         board_string = self.LAYOUT
-        for index, tile in self._tiles.items():
+        for index, tile in self._tiles_old.items():
             board_string = replace_character(board_string, position_in_layout(index, 'n1'), tile.n1)
             board_string = replace_character(board_string, position_in_layout(index, 'n2'), tile.n2)
             board_string = replace_character(board_string, position_in_layout(index, 'n3'), tile.n3)
@@ -151,7 +156,7 @@ class Board:
             n1 = []
             for row in Board.all_rows(column):
                 index = f'{column}{row}'
-                n1.append(self._tiles.get(index, Tile(0, 0, 0)).n1) # 0-tile is default
+                n1.append(self._tiles_old.get(index, Tile(0, 0, 0)).n1) # 0-tile is default
             return sum(n1) if all_items_equal(n1) else 0
 
         def row_from_left_score(row) -> int:
@@ -164,7 +169,7 @@ class Board:
             }
             n2 = []
             for index in indices_for_row_from_left[row]:
-                n2.append(self._tiles.get(index, Tile(0, 0, 0)).n2) # 0-tile is default
+                n2.append(self._tiles_old.get(index, Tile(0, 0, 0)).n2) # 0-tile is default
             return sum(n2) if all_items_equal(n2) else 0
         
 
@@ -178,7 +183,7 @@ class Board:
             }
             n3 = []
             for index in indices_for_row_from_left[row]:
-                n3.append(self._tiles.get(index, Tile(0, 0, 0)).n3) # 0-tile is default
+                n3.append(self._tiles_old.get(index, Tile(0, 0, 0)).n3) # 0-tile is default
             return sum(n3) if all_items_equal(n3) else 0
         
         score = 0
@@ -190,4 +195,4 @@ class Board:
         return score
 
     def tiles(self) -> dict[str, Tile]:
-        return self._tiles
+        return self._tiles_old
