@@ -23,7 +23,7 @@ class Game:
             raise GameNotRunningException()
         return self.current_tile
     
-    def place_tile(self, position: str):
+    def place_tile_old(self, position: str):
         if self.finished(): return
         try:
             self.board.place_tile_old(self.current_tile, position)

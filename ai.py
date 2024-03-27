@@ -27,6 +27,6 @@ if __name__ == '__main__':
     for _ in range(19):
         position = ai.run(game.board, game.get_tile())
         print(f'place Tile {game.get_tile()} at {position}')
-        game.place_tile(position)
+        game.place_tile_old(position)
         sleep(1)
     
