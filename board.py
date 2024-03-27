@@ -84,6 +84,14 @@ class Board:
     def all_columns() -> list[str]:
         return ['A', 'B', 'C', 'D', 'E']
 
+    def place_tile(self, tile: Tile, position: BoardPosition):
+        assert position in Board.ALL_POSITIONS
+        assert position not in self._tiles.keys()
+        
+        self._tiles[position] = tile
+        
+        self.draw()
+
     def place_tile_old(self, tile: Tile, position: str):
         assert len(position) == 2
         column = position[0]
