@@ -74,7 +74,7 @@ class Board:
         self._tiles = {}  # layout BoardPosition('A', 1) : Tile(1, 2, 3)
 
     def place_tile(self, tile: Tile, position: BoardPosition):
-        assert position in self.left_tiles()
+        assert position in self.open_positions()
         
         self._tiles[position] = tile
 
