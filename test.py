@@ -7,7 +7,7 @@ from tiles import Tile
 
 class TestAI(unittest.TestCase):
 
-    def test_1(self):
+    def test_placement_1(self):
         """
         ****************************************************************
         *                               C                              *
@@ -56,7 +56,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('D2'))
 
-    def test_2(self):
+    def test_placement_2(self):
         """
         ****************************************************************
         *                               C                              *
@@ -108,7 +108,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('B4'))
 
-    def test_3(self):
+    def test_placement_3(self):
         """
         ****************************************************************
         *                               C                              *
@@ -167,7 +167,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('D1'))
 
-    def test_4(self):
+    def test_placement_4(self):
         """
         ****************************************************************
         *                               C                              *
@@ -227,7 +227,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('E1'))
 
-    def test_5(self):
+    def test_placement_5(self):
         """
         ****************************************************************
         *                               C                              *
