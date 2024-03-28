@@ -21,7 +21,7 @@ class BoardPosition:
 
     @classmethod
     def from_string(cls, position: str):
-        return cls(position[0], int(position[1]))
+        return cls(position[0].upper(), int(position[1]))
 
 class Board:
 
