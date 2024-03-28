@@ -138,34 +138,10 @@ class Board:
         print(f'max score: {self.max_score()}')
 
     def score(self) -> int:
-        score_groups = {
-            'n1' : [
-                [ BoardPosition('A', 1), BoardPosition('A', 2), BoardPosition('A', 3) ],
-                [ BoardPosition('B', 1), BoardPosition('B', 2), BoardPosition('B', 3), BoardPosition('B', 4) ],
-                [ BoardPosition('C', 1), BoardPosition('C', 2), BoardPosition('C', 3), BoardPosition('C', 4), BoardPosition('C', 5) ],
-                [ BoardPosition('D', 1), BoardPosition('D', 2), BoardPosition('D', 3), BoardPosition('D', 4) ],
-                [ BoardPosition('E', 1), BoardPosition('E', 2), BoardPosition('E', 3) ],
-            ],
-            'n2' : [
-                [ BoardPosition('A', 1), BoardPosition('B', 1), BoardPosition('C', 1) ],
-                [ BoardPosition('A', 2), BoardPosition('B', 2), BoardPosition('C', 2), BoardPosition('D', 1) ],
-                [ BoardPosition('A', 3), BoardPosition('B', 3), BoardPosition('C', 3), BoardPosition('D', 2), BoardPosition('E', 1) ],
-                [                        BoardPosition('D', 4), BoardPosition('C', 4), BoardPosition('D', 3), BoardPosition('E', 2) ],
-                [                                               BoardPosition('C', 5), BoardPosition('D', 4), BoardPosition('E', 3) ],
-            ],
-            'n3' : [
-                [                                               BoardPosition('C', 1), BoardPosition('D', 1), BoardPosition('E', 1) ],
-                [                        BoardPosition('B', 1), BoardPosition('C', 2), BoardPosition('D', 2), BoardPosition('E', 2) ],
-                [ BoardPosition('A', 1), BoardPosition('B', 2), BoardPosition('C', 3), BoardPosition('D', 3), BoardPosition('E', 3) ],
-                [ BoardPosition('A', 2), BoardPosition('B', 3), BoardPosition('C', 4), BoardPosition('D', 4) ],
-                [ BoardPosition('A', 3), BoardPosition('B', 4), BoardPosition('C', 5) ],
-            ],
-        }
-
         score = 0
 
         for nx in ['n1', 'n2', 'n3']:
-            for group in score_groups[nx]:
+            for group in self.SCORE_GROUPS[nx]:
                 number_list = []
                 for board_position in group:
                     tile = self.tiles().get(board_position, Tile(0, 0, 0)) # 0-Tile if no tile is set
