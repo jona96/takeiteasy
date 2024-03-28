@@ -2,7 +2,8 @@ import unittest
 from ai import AI
 from board import Board, BoardPosition
 Pos = BoardPosition.from_string
-from tiles import Tile
+from tiles import Tile, Tiles
+from game import Game
 
 
 class TestAI(unittest.TestCase):
@@ -289,5 +290,18 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('B4'))
 
+    def test_score_1(self):
+        """At least score 100 at depth 2"""
+        board = Board()
+        tiles = Tiles()
+        
+        while any(board.open_positions()):
+            tile = tiles.pick_tile() # TODO: use fixed set of tiles
+            position = AI.get_best_position(board, tile, depth=2)
+            board.place_tile(tile, position)
+            board.draw()
+        
+        self.assertGreater(board.score(), 100)
+    
 if __name__ == '__main__':
     unittest.main()
