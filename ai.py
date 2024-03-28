@@ -10,7 +10,7 @@ class AI:
     
     @cache
     @staticmethod
-    def estimated_score(board: Board, depth:int = 2) -> float:
+    def estimated_score_old(board: Board, depth:int = 2) -> float:
         if depth == 0:
             return board.max_score()
         elif not any(board.open_positions()):
@@ -32,7 +32,7 @@ class AI:
                 for position in positions_with_best_max_scores:
                     board_copy = deepcopy(board)
                     board_copy.place_tile(tile, position)
-                    score_positions.append({'position' : position, 'score' : AI.estimated_score(board_copy, depth - 1)})
+                    score_positions.append({'position' : position, 'score' : AI.estimated_score_old(board_copy, depth - 1)})
                 score_positions.sort(key=lambda x:x['score'], reverse=True)
                 tile_scores.append(score_positions[0]['score'])
             return mean(tile_scores)
@@ -43,7 +43,7 @@ class AI:
         for position in board.open_positions():
             board_copy = deepcopy(board)
             board_copy.place_tile(tile, position)
-            score_positions.append({'position' : position, 'score' : AI.estimated_score(board_copy, 2)})
+            score_positions.append({'position' : position, 'score' : AI.estimated_score_old(board_copy, 2)})
         # print(score_positions)
         score_positions.sort(key=lambda x:x['score'], reverse=True)
         best_position = score_positions[0]['position']
