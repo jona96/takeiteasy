@@ -185,7 +185,7 @@ class Board:
     def tiles(self) -> dict[BoardPosition, Tile]:
         return self._tiles
 
-    def left_tiles(self) -> list[Tile]:
+    def remaining_tiles(self) -> list[Tile]:
         return [tile for tile in Tiles.ALL_TILES if tile not in self.tiles().values()]
     
     def open_positions(self) -> list[BoardPosition]:
