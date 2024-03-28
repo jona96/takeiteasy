@@ -18,7 +18,13 @@ class AI:
     
     @staticmethod
     def get_best_position(board: Board, tile: Tile, depth: int = 2) -> BoardPosition:
-        return random.choice(board.open_positions())
+        scores = []
+        for position in board.open_positions():
+            simul_board = deepcopy(board)
+            simul_board.place_tile(tile, position)
+            scores += [{'pos':position, 'score': AI.estimated_score(simul_board)}]
+        highest_score = max(scores, key=lambda x:x['score'])
+        return highest_score['pos']
     
     @cache
     @staticmethod
