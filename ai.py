@@ -37,7 +37,8 @@ class AI:
                 tile_scores.append(score_positions[0]['score'])
             return mean(tile_scores)
 
-    def get_best_position(self, board: Board, tile: Tile) -> BoardPosition:
+    @staticmethod
+    def get_best_position(board: Board, tile: Tile) -> BoardPosition:
         score_positions = []
         for position in board.open_positions():
             board_copy = deepcopy(board)
@@ -55,10 +56,8 @@ if __name__ == '__main__':
     game = Game()
     game.start()
     
-    ai = AI()
-    
     for _ in range(19):
-        position = ai.get_best_position(game.board, game.get_tile())
+        position = AI.get_best_position(game.board, game.get_tile())
         print(f'place Tile {game.get_tile()} at {position}')
         game.place_tile(position)
         sleep(0.3)
