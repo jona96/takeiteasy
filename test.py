@@ -327,9 +327,132 @@ class TestAI(unittest.TestCase):
             tile = tiles.pop()
             position = AI.get_best_position(board, tile, depth=2)
             board.place_tile(tile, position)
-            board.draw()
+            # board.draw()
         
         self.assertGreater(board.score(), 100)
+    
+    def test_score_2(self):
+        """At least score 100 at depth 2"""
+        board = Board()
+        tiles = [
+            Tile(9,2,8),
+            Tile(5,7,4),
+            Tile(1,2,3),
+            Tile(9,2,4),
+            Tile(9,7,8),
+            Tile(9,6,8),
+            Tile(1,6,3),
+            Tile(1,7,4),
+            Tile(5,7,3),
+            Tile(5,6,8),
+            Tile(5,2,3),
+            Tile(1,6,8),
+            Tile(9,6,3),
+            Tile(5,7,8),
+            Tile(1,6,4),
+            Tile(9,7,3),
+            Tile(5,2,4),
+            Tile(9,7,4),
+            Tile(9,2,3),
+            Tile(5,6,4),
+            Tile(9,6,4),
+            Tile(1,7,8),
+            Tile(1,7,3),
+            Tile(5,2,8),
+            Tile(1,2,4),
+            Tile(1,2,8),
+            Tile(5,6,3),
+        ]
+        
+        while any(board.open_positions()):
+            tile = tiles.pop()
+            position = AI.get_best_position(board, tile, depth=2)
+            board.place_tile(tile, position)
+            # board.draw()
+        
+        self.assertGreater(board.score(), 100)
+    
+    def test_score_3(self):
+        """At least score 150 at depth 3"""
+        board = Board()
+        tiles = [
+            Tile(5,2,3),
+            Tile(1,6,8),
+            Tile(5,2,4),
+            Tile(1,6,3),
+            Tile(9,6,4),
+            Tile(9,7,8),
+            Tile(5,7,8),
+            Tile(5,6,8),
+            Tile(5,2,8),
+            Tile(9,2,4),
+            Tile(5,6,3),
+            Tile(5,6,4),
+            Tile(1,2,4),
+            Tile(9,6,3),
+            Tile(1,7,8),
+            Tile(9,7,4),
+            Tile(5,7,3),
+            Tile(9,2,8),
+            Tile(1,2,3),
+            Tile(1,6,4),
+            Tile(9,2,3),
+            Tile(9,6,8),
+            Tile(9,7,3),
+            Tile(1,7,3),
+            Tile(1,2,8),
+            Tile(5,7,4),
+            Tile(1,7,4),
+        ]
+        
+        while any(board.open_positions()):
+            tile = tiles.pop()
+            position = AI.get_best_position(board, tile, depth=3)
+            board.place_tile(tile, position)
+            # board.draw()
+        
+        self.assertGreater(board.score(), 150)
+    
+    def test_score_4(self):
+        """At least score 150 at depth 3"""
+        board = Board()
+        tiles = [
+            Tile(9,2,8),
+            Tile(5,7,4),
+            Tile(1,2,3),
+            Tile(9,2,4),
+            Tile(9,7,8),
+            Tile(9,6,8),
+            Tile(1,6,3),
+            Tile(1,7,4),
+            Tile(5,7,3),
+            Tile(5,6,8),
+            Tile(5,2,3),
+            Tile(1,6,8),
+            Tile(9,6,3),
+            Tile(5,7,8),
+            Tile(1,6,4),
+            Tile(9,7,3),
+            Tile(5,2,4),
+            Tile(9,7,4),
+            Tile(9,2,3),
+            Tile(5,6,4),
+            Tile(9,6,4),
+            Tile(1,7,8),
+            Tile(1,7,3),
+            Tile(5,2,8),
+            Tile(1,2,4),
+            Tile(1,2,8),
+            Tile(5,6,3),
+        ]
+        
+        while any(board.open_positions()):
+            tile = tiles.pop()
+            position = AI.get_best_position(board, tile, depth=3)
+            board.place_tile(tile, position)
+            # board.draw()
+        
+        self.assertGreater(board.score(), 150)
     
 if __name__ == '__main__':
     unittest.main()
