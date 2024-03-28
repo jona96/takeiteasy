@@ -10,6 +10,18 @@ class AI:
     
     @cache
     @staticmethod
+    def estimated_score(board: Board) -> float:
+        if board.open_positions() == 0:
+            return board.score()
+        return board.max_score() # TODO: better implementation
+        return random.random() * 307 # TODO: implement
+    
+    @staticmethod
+    def get_best_position(board: Board, tile: Tile, depth: int = 2) -> BoardPosition:
+        return random.choice(board.open_positions())
+    
+    @cache
+    @staticmethod
     def estimated_score_old(board: Board, depth:int = 2) -> float:
         if depth == 0:
             return board.max_score()
@@ -38,7 +50,7 @@ class AI:
             return mean(tile_scores)
 
     @staticmethod
-    def get_best_position(board: Board, tile: Tile) -> BoardPosition:
+    def get_best_position_old(board: Board, tile: Tile) -> BoardPosition:
         score_positions = []
         for position in board.open_positions():
             board_copy = deepcopy(board)
