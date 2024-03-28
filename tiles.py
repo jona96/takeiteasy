@@ -24,8 +24,8 @@ class Tiles:
         Tile(9, 7, 3), Tile(9, 7, 4), Tile(9, 7, 8),
     ]
 
-    def __init__(self):
-        self._left_tiles = Tiles.ALL_TILES
+    def __init__(self, already_set_tiles: list[Tile] = []):
+        self._left_tiles = [tile for tile in Tiles.ALL_TILES if tile not in already_set_tiles]
 
     def pick_tile(self):
         if not any(self._left_tiles):
