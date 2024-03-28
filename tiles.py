@@ -37,3 +37,9 @@ class Tiles:
             return None
         index_of_tile = int(random.random() * len(self._left_tiles))
         return self._left_tiles.pop(index_of_tile)
+
+
+if __name__ == '__main__':
+    tiles = Tiles()
+    while any(tiles._left_tiles):
+        print(tiles.pick_tile())
