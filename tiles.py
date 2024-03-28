@@ -7,6 +7,11 @@ class Tile:
     n2: int
     n3: int
 
+    def __post_init__(self):
+        assert self.n1 in [0, 1, 5, 9]
+        assert self.n2 in [0, 2, 6, 7]
+        assert self.n3 in [0, 3, 4, 8]
+
     def __repr__(self) -> str:
         return f'({self.n1},{self.n2},{self.n3})'
     
