@@ -17,7 +17,7 @@ class AI:
         return random.random() * 307 # TODO: implement
     
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, depth: int = 2) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, depth: int = 2, width: int = 3) -> BoardPosition:
         scores = []
         # depth 1
         for position in board.open_positions():
@@ -25,7 +25,7 @@ class AI:
             simul_board.place_tile(tile, position)
             scores += [{'pos':position, 'score': AI.estimated_score(simul_board)}]
         scores.sort(key=lambda x:x['score'], reverse=True) # sort with high scores first
-        scores = scores[:3]  # keep only most promising results for further analysis
+        scores = scores[:width]  # keep only most promising results for further analysis
         
         # depth 2
         if depth > 0 and len(board.open_positions()) > 1:
