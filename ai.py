@@ -28,7 +28,7 @@ class AI:
                         number_list.append(number)
                 if not any(number_list):
                     # no tile set, assume average value of 5 with average propability of 50%
-                    score += 5 * len(group) * 0.5
+                    score += 5 * len(group) * 0.2
                 elif all_items_equal(number_list):
                     # so far all number the same
                     number = number_list[0]
