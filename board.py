@@ -11,6 +11,11 @@ class BoardPosition:
     column: str
     row: int
     
+    def __post_init__(self):
+        assert isinstance(self.column, str)
+        assert self.column == self.column.upper()
+        assert isinstance(self.row, int)
+
     def __repr__(self) -> str:
         return f'{self.column}{self.row}'
 
