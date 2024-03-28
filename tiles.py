@@ -1,10 +1,11 @@
+from dataclasses import dataclass
 import random
 
+@dataclass(frozen=True)
 class Tile:
-    def __init__(self, n1, n2, n3):
-        self.n1 = n1
-        self.n2 = n2
-        self.n3 = n3
+    n1: int
+    n2: int
+    n3: int
 
     def __repr__(self) -> str:
         return f'({self.n1},{self.n2},{self.n3})'
