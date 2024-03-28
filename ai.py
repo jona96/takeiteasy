@@ -8,44 +8,45 @@ import random
 
 class AI:
     
-    def _random_pick(self, board: Board, tile: Tile) -> BoardPosition:
-        position = random.choice(board.ALL_POSITIONS)
-        if position in board.tiles().keys():
-            return self.get_best_position(board, tile)
-        else:
-            return position
-    
     @cache
     @staticmethod
-    def estimated_score(board: Board) -> float:
-        if len(board.tiles()) == 19:
+    def estimated_score(board: Board, depth:int = 2) -> float:
+        if depth == 0:
+            return board.max_score()
+        elif not any(board.open_positions()):
             return board.score()
         else:
             # try every left tile
-            scores = []
+            tile_scores = []
             for tile in board.left_tiles():
+                score_positions = []
                 for position in board.open_positions():
                     board_copy = deepcopy(board)
                     board_copy.place_tile(tile, position)
-                    scores.append(AI.estimated_score(board_copy))
-            return mean(scores)
+                    score_positions.append({'position' : position, 'score' : board_copy.max_score()})
+                score_positions.sort(key=lambda x:x['score'], reverse=True)
+                positions_with_best_max_scores = [score_pos['position'] for score_pos in score_positions][:3]
+                # print(f'positions_with_best_max_scores={positions_with_best_max_scores}')
+                
+                score_positions = []
+                for position in positions_with_best_max_scores:
+                    board_copy = deepcopy(board)
+                    board_copy.place_tile(tile, position)
+                    score_positions.append({'position' : position, 'score' : AI.estimated_score(board_copy, depth - 1)})
+                score_positions.sort(key=lambda x:x['score'], reverse=True)
+                tile_scores.append(score_positions[0]['score'])
+            return mean(tile_scores)
 
-    def _try_everything(self, board: Board, tile: Tile) -> BoardPosition:
-        score_positions = {} # estimated score : BoardPosition
+    def get_best_position(self, board: Board, tile: Tile) -> BoardPosition:
+        score_positions = []
         for position in board.open_positions():
             board_copy = deepcopy(board)
             board_copy.place_tile(tile, position)
-            score_positions[AI.estimated_score(board_copy)] = position
+            score_positions.append({'position' : position, 'score' : AI.estimated_score(board_copy, 2)})
         print(score_positions)
-        max_score = max(score_positions.keys())
-        best_position = score_positions[max_score]
+        score_positions.sort(key=lambda x:x['score'], reverse=True)
+        best_position = score_positions[0]['position']
         return best_position
-
-    def get_best_position(self, board: Board, tile: Tile) -> BoardPosition:
-        if len(board.open_positions()) <= 4:
-            return self._try_everything(board, tile)
-        else:
-            return self._random_pick(board, tile)
 
 if __name__ == '__main__':
     from game import Game
