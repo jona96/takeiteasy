@@ -41,3 +41,19 @@ class Game:
     
     def finished(self) -> bool:
         return self._finished
+
+
+if __name__ == '__main__':
+    
+    board = Board()
+    game = Game(board)
+    game.start()
+    
+    while not game.finished():
+        print(f'The current tile is: {game.get_tile()}')
+        position = input('position for current Tile (e.g. C3): ')
+        try:
+            game.place_tile(BoardPosition.from_string(position))
+        except:
+            print(f'Could not place the tile on {position}. Try again.')
+        
