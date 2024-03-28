@@ -36,11 +36,11 @@ class AI:
             score_positions[AI.estimated_score(board_copy)] = position
         print(score_positions)
         max_score = max(score_positions.keys())
-        best_position = score_positions(max_score)
+        best_position = score_positions[max_score]
         return best_position
 
     def get_best_position(self, board: Board, tile: Tile) -> BoardPosition:
-        if len(board.left_tiles()) <= 1:
+        if len(board.open_positions()) <= 1:
             return self._try_everything(board, tile)
         else:
             return self._random_pick(board, tile)
