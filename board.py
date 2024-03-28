@@ -150,8 +150,11 @@ class Board:
 
         return score
                 
-    def tiles(self) -> dict[str, Tile]:
+    def tiles(self) -> dict[BoardPosition, Tile]:
         return self._tiles
 
     def left_tiles(self) -> list[Tile]:
         return [tile for tile in Tiles.ALL_TILES if tile not in self.tiles().values()]
+    
+    def open_positions(self) -> list[BoardPosition]:
+        return [pos for pos in self.ALL_POSITIONS if pos not in self.tiles().keys()]
