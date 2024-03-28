@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from tiles import Tile
+from tiles import Tile, Tiles
 
 
 def all_items_equal(l:list) -> bool:
@@ -74,8 +74,7 @@ class Board:
         self._tiles = {}  # layout BoardPosition('A', 1) : Tile(1, 2, 3)
 
     def place_tile(self, tile: Tile, position: BoardPosition):
-        assert position in Board.ALL_POSITIONS
-        assert position not in self._tiles.keys()
+        assert position in self.left_tiles()
         
         self._tiles[position] = tile
 
@@ -153,3 +152,6 @@ class Board:
                 
     def tiles(self) -> dict[str, Tile]:
         return self._tiles
+
+    def left_tiles(self) -> list[Tile]:
+        return [tile for tile in Tiles.ALL_TILES if tile not in self.tiles().values()]

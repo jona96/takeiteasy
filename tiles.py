@@ -31,6 +31,3 @@ class Tiles:
             return None
         index_of_tile = int(random.random() * len(self._left_tiles))
         return self._left_tiles.pop(index_of_tile)
-
-    def left_tiles(self) -> list[Tile]:
-        return self._left_tiles
