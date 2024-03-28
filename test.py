@@ -5,16 +5,56 @@ Pos = BoardPosition.from_string
 from tiles import Tile
 
 
-def board_A() -> Board:
-    board = Board()
-    board.place_tile(Tile(9,7,8), Pos('A1'))
-    return board
-
 class TestAI(unittest.TestCase):
 
-    def test_with_two_spaces(self):
-        suggested_position = AI.get_best_position(board_A(), Tile(1,2,3))
-        self.assertEqual(suggested_position, Pos('E3'))
+    def test_1(self):
+        """
+        ****************************************************************
+        *                               C                              *
+        *                            _______                           *
+        *                      B    /       \    D                     *
+        *                   _______/         \_______                  *
+        *             A    /       \         /       \    E            *
+        *          _______/    1    \_______/         \_______         *
+        *         /       \  2   3  /       \         /       \        *
+        *        /    5    \_______/    9    \_______/         \       *
+        *        \  2   8  /       \  2   3  /       \         /       *
+        *      1  \_______/         \_______/         \_______/  1     *
+        *         /       \         /       \         /       \        *
+        *        /    5    \_______/         \_______/    1    \       *
+        *        \  6   4  /       \         /       \  6   3  /       *
+        *      2  \_______/    1    \_______/    5    \_______/  2     *
+        *         /       \  7   8  /       \  6   8  /       \        *
+        *        /         \_______/         \_______/         \       *
+        *        \         /       \         /       \         /       *
+        *      3  \_______/         \_______/    5    \_______/  3     *
+        *                 \         /       \  7   8  /                *
+        *               4  \_______/         \_______/  4              *
+        *                          \         /                         *
+        *                        5  \_______/  5                       *
+        *                                                              *
+        ****************************************************************
+        
+          _______  
+         /       \  
+        /    5    \  ==>  D2
+        \  7   3  / 
+         \_______/  
+        """
+        
+        board = Board()
+        board.place_tile(Tile(5,2,8), Pos('A1'))
+        board.place_tile(Tile(5,6,4), Pos('A2'))
+        board.place_tile(Tile(1,2,3), Pos('B1'))
+        board.place_tile(Tile(1,7,8), Pos('B3'))
+        board.place_tile(Tile(9,2,3), Pos('C2'))
+        board.place_tile(Tile(5,6,8), Pos('D3'))
+        board.place_tile(Tile(5,7,8), Pos('D4'))
+        board.place_tile(Tile(1,6,3), Pos('E2'))
+        
+        suggested_position = AI.get_best_position(board, Tile(5,7,3))
+        
+        self.assertEqual(suggested_position, Pos('D2'))
 
 if __name__ == '__main__':
     unittest.main()
