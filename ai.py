@@ -44,7 +44,7 @@ class AI:
             board_copy = deepcopy(board)
             board_copy.place_tile(tile, position)
             score_positions.append({'position' : position, 'score' : AI.estimated_score(board_copy, 2)})
-        print(score_positions)
+        # print(score_positions)
         score_positions.sort(key=lambda x:x['score'], reverse=True)
         best_position = score_positions[0]['position']
         return best_position
