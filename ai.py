@@ -40,7 +40,7 @@ class AI:
         return best_position
 
     def get_best_position(self, board: Board, tile: Tile) -> BoardPosition:
-        if len(board.open_positions()) <= 1:
+        if len(board.open_positions()) <= 4:
             return self._try_everything(board, tile)
         else:
             return self._random_pick(board, tile)
