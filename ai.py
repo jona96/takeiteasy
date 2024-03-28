@@ -3,6 +3,7 @@ from tiles import Tile, Tiles
 from board import Board, BoardPosition
 from copy import deepcopy
 from statistics import mean
+from functools import lru_cache as cache
 import random
 
 class AI:
@@ -14,6 +15,7 @@ class AI:
         else:
             return position
     
+    @cache
     @staticmethod
     def estimated_score(board: Board) -> float:
         if len(board.tiles()) == 19:
