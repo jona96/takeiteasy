@@ -70,6 +70,30 @@ class Board:
         BoardPosition('E', 3),
     ]
 
+    SCORE_GROUPS = {
+        'n1' : [
+            [ BoardPosition('A', 1), BoardPosition('A', 2), BoardPosition('A', 3) ],
+            [ BoardPosition('B', 1), BoardPosition('B', 2), BoardPosition('B', 3), BoardPosition('B', 4) ],
+            [ BoardPosition('C', 1), BoardPosition('C', 2), BoardPosition('C', 3), BoardPosition('C', 4), BoardPosition('C', 5) ],
+            [ BoardPosition('D', 1), BoardPosition('D', 2), BoardPosition('D', 3), BoardPosition('D', 4) ],
+            [ BoardPosition('E', 1), BoardPosition('E', 2), BoardPosition('E', 3) ],
+        ],
+        'n2' : [
+            [ BoardPosition('A', 1), BoardPosition('B', 1), BoardPosition('C', 1) ],
+            [ BoardPosition('A', 2), BoardPosition('B', 2), BoardPosition('C', 2), BoardPosition('D', 1) ],
+            [ BoardPosition('A', 3), BoardPosition('B', 3), BoardPosition('C', 3), BoardPosition('D', 2), BoardPosition('E', 1) ],
+            [                        BoardPosition('D', 4), BoardPosition('C', 4), BoardPosition('D', 3), BoardPosition('E', 2) ],
+            [                                               BoardPosition('C', 5), BoardPosition('D', 4), BoardPosition('E', 3) ],
+        ],
+        'n3' : [
+            [                                               BoardPosition('C', 1), BoardPosition('D', 1), BoardPosition('E', 1) ],
+            [                        BoardPosition('B', 1), BoardPosition('C', 2), BoardPosition('D', 2), BoardPosition('E', 2) ],
+            [ BoardPosition('A', 1), BoardPosition('B', 2), BoardPosition('C', 3), BoardPosition('D', 3), BoardPosition('E', 3) ],
+            [ BoardPosition('A', 2), BoardPosition('B', 3), BoardPosition('C', 4), BoardPosition('D', 4) ],
+            [ BoardPosition('A', 3), BoardPosition('B', 4), BoardPosition('C', 5) ],
+        ],
+    }
+
     def __init__(self):
         self._tiles = {}  # layout BoardPosition('A', 1) : Tile(1, 2, 3)
 
@@ -111,6 +135,7 @@ class Board:
             board_string = replace_character(board_string, position_in_layout(board_position, 'n3'), tile.n3)
         print(board_string)
         print(f'score: {self.score()}')
+        print(f'max score: {self.max_score()}')
 
     def score(self) -> int:
         score_groups = {
@@ -149,7 +174,33 @@ class Board:
                 score += sum(number_list) if all_items_equal(number_list) else 0
 
         return score
-                
+
+    def max_score(self) -> int:
+        score = 0
+
+        max_numbers = {
+            'n1' : 9,
+            'n2' : 7,
+            'n3' : 8,
+        }
+
+        for nx in ['n1', 'n2', 'n3']:
+            for group in self.SCORE_GROUPS[nx]:
+                number_list = []
+                for board_position in group:
+                    if board_position in self.tiles().keys():
+                        tile = self.tiles()[board_position]
+                        number = getattr(tile, nx)
+                        number_list.append(number)
+                if not any(number_list):   # no tile set, assume max value 
+                    score += max_numbers[nx] * len(group)
+                elif all_items_equal(number_list):  # so far all number the same
+                    score += number_list[0] * len(group)
+                else:       # different tiles -> no way to safe the row
+                    score += 0
+
+        return score
+       
     def tiles(self) -> dict[BoardPosition, Tile]:
         return self._tiles
 
