@@ -139,8 +139,6 @@ class AI:
                     score += 0
 
         return score
-        return board.max_score() # TODO: better implementation
-        return random.random() * 307 # TODO: implement
     
     @cache
     @staticmethod
