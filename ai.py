@@ -33,7 +33,7 @@ class ScoreNode:
     def children(self):
         if not hasattr(self, '_children'):
             self._children:list[ScoreNode] = []
-            self.expand_children()
+            self._expand_children()
         return self._children
 
     def hasScore(self) -> bool:
@@ -77,7 +77,7 @@ class ScoreNodeWhereToPut(ScoreNode):
         else:
             return max(children_scores)
         
-    def expand_children(self):
+    def _expand_children(self):
         if any(self.children): return
         for position in self.board.open_positions():
             new_board = deepcopy(self.board)
@@ -96,7 +96,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         else:
             return mean(children_scores)
         
-    def expand_children(self):
+    def _expand_children(self):
         if any(self.children): return
         for tile in self.board.remaining_tiles():
             new_board = deepcopy(self.board)
