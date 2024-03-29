@@ -39,15 +39,6 @@ class ScoreNode:
     def hasScore(self) -> bool:
         return self.score() is not None
     
-    def hasScoreForFullDepth(self) -> bool:
-        if len(self.children) == 1: # last child == last tile is is placed
-            return self.children[0].hasScore()
-        else:
-            for child in self.children:
-                if not child.hasScoreForFullDepth():
-                    return False
-            return True
-        
     def calc_score_of_children(self, eval_function):
         for child in self.children:
             if not child.hasScore():
