@@ -138,7 +138,15 @@ class AI:
         base_board.calc_score_of_children(AI.estimated_score)
         print(base_board)
         
-        # while not time() > end_time:
+        # strategy:
+        # - calc every position where to put the tile
+        # - for the best x positions get every possible next tile
+        # - calc every position where to put the next tile
+        # - ...
+        
+        
+        while not time() > end_time:
+            pass
         #     # find deepest best child that has not been fully solved
             
         #     # matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
