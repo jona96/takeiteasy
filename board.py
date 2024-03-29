@@ -87,7 +87,7 @@ class Board:
             [ BoardPosition('A', 1), BoardPosition('B', 1), BoardPosition('C', 1) ],
             [ BoardPosition('A', 2), BoardPosition('B', 2), BoardPosition('C', 2), BoardPosition('D', 1) ],
             [ BoardPosition('A', 3), BoardPosition('B', 3), BoardPosition('C', 3), BoardPosition('D', 2), BoardPosition('E', 1) ],
-            [                        BoardPosition('D', 4), BoardPosition('C', 4), BoardPosition('D', 3), BoardPosition('E', 2) ],
+            [                        BoardPosition('B', 4), BoardPosition('C', 4), BoardPosition('D', 3), BoardPosition('E', 2) ],
             [                                               BoardPosition('C', 5), BoardPosition('D', 4), BoardPosition('E', 3) ],
         ],
         'n3' : [
