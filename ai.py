@@ -29,13 +29,6 @@ class ScoreNode:
             repr += f' ({round(self.score(), 1)})'
         return repr
     
-    def score(self) -> float:
-        if not any(self.children):
-            return self.own_score
-        else:
-            children_scores = [child.score() or 0 for child in self.children]
-            return mean(children_scores)
-        
     def hasScore(self) -> bool:
         return self.score() is not None
     
@@ -59,19 +52,54 @@ class ScoreNode:
     def best_position(self, tile:Tile = None) -> BoardPosition | None:
         return self.best_child().board.position_of_tile(tile)
         
-    def expand_children(self, new_tile:Tile):
-        if any(self.children): return
-        for position in self.board.open_positions():
-            new_board = deepcopy(self.board)
-            new_board.place_tile(new_tile, position)
-            new_child = ScoreNode(new_board)
-            self.children.append(new_child)
-    
     def calc_score_of_children(self, eval_function):
         for child in self.children:
             if not child.hasScore():
                 child.own_score = eval_function(child.board)
         
+class ScoreNodeWhereToPut(ScoreNode):
+    
+    def __init__(self, position: Board, new_tile:Tile, score: float = None):
+        super().__init__(position, score)
+        self.new_tile = new_tile
+        
+    def score(self) -> float:
+        if not any(self.children):
+            return self.own_score
+        else:
+            children_scores = [child.score() for child in self.children if child.score()]
+            if not any(children_scores):
+                return 0
+            else:
+                return max(children_scores)
+        
+    def expand_children(self):
+        if any(self.children): return
+        for position in self.board.open_positions():
+            new_board = deepcopy(self.board)
+            new_board.place_tile(self.new_tile, position)
+            new_child = ScoreNodeNewRandomTile(new_board)
+            self.children.append(new_child)
+    
+class ScoreNodeNewRandomTile(ScoreNode):
+    
+    def score(self) -> float:
+        if not any(self.children):
+            return self.own_score
+        else:
+            children_scores = [child.score() for child in self.children if child.score()]
+            if not any(children_scores):
+                return 0
+            else:
+                return mean(children_scores)
+        
+    def expand_children(self):
+        if any(self.children): return
+        for tile in self.board.remaining_tiles():
+            new_board = deepcopy(self.board)
+            new_child = ScoreNodeWhereToPut(new_board, tile)
+            self.children.append(new_child)
+    
 
 class AI:
     
@@ -147,8 +175,8 @@ class AI:
     @staticmethod
     def get_best_position_tree(board: Board, tile: Tile, timeout:int = 0.1) -> BoardPosition:
         end_time = time() + timeout
-        base_board = ScoreNode(board)
-        base_board.expand_children(tile)
+        base_board = ScoreNodeWhereToPut(board, tile)
+        base_board.expand_children()
         base_board.calc_score_of_children(AI.estimated_score)
         print(base_board)
         
@@ -165,9 +193,8 @@ class AI:
                 best_scoring_child = best_scoring_child.best_child()
             
             # calc scores for that
-            for new_tile in best_scoring_child.board.remaining_tiles():
-                best_scoring_child.expand_children(new_tile)
-                best_scoring_child.calc_score_of_children(AI.estimated_score)
+            best_scoring_child.expand_children()
+            best_scoring_child.calc_score_of_children(AI.estimated_score)
             
             print(base_board)
             # sleep(1)
