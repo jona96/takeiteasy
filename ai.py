@@ -39,6 +39,11 @@ class ScoreTree:
             new_child = ScoreTree(new_board)
             self.children.append(new_child)
     
+    def calc_score_of_children(self, eval_function):
+        for child in self.children:
+            if not child.hasScore():
+                child.own_score = eval_function(child.board)
+        
 
 class AI:
     
@@ -116,9 +121,7 @@ class AI:
         start_time = time()
         base_board = ScoreTree(board)
         base_board.expand_children(tile)
-        for child in base_board.children:
-            if not child.hasScore():
-                child.own_score = AI.estimated_score(child.board)
+        base_board.calc_score_of_children(AI.estimated_score)
         
         # while not (time() - start_time) > timeout:
             # best_position_yet = base_board.best_position()
