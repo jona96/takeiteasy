@@ -48,15 +48,6 @@ class ScoreNode:
                     return False
             return True
         
-    def best_child(self, tile:Tile = None):
-        matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
-        if not any(matching_children):
-            return None
-        return max(matching_children, key=lambda child:child.score() or 0)
-        
-    def best_position(self, tile:Tile = None) -> BoardPosition | None:
-        return self.best_child().board.position_of_tile(tile)
-        
     def calc_score_of_children(self, eval_function):
         for child in self.children:
             if not child.hasScore():
@@ -85,6 +76,15 @@ class ScoreNodeWhereToPut(ScoreNode):
             new_child = ScoreNodeNewRandomTile(new_board)
             self.children.append(new_child)
     
+    def best_child(self, tile:Tile = None):
+        matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
+        if not any(matching_children):
+            return None
+        return max(matching_children, key=lambda child:child.score() or 0)
+        
+    def best_position(self, tile:Tile = None) -> BoardPosition | None:
+        return self.best_child().board.position_of_tile(tile)
+        
 class ScoreNodeNewRandomTile(ScoreNode):
     
     def score(self) -> float:
@@ -183,22 +183,22 @@ class AI:
         base_board.calc_score_of_children(AI.estimated_score)
         print(base_board)
         
-        while not time() > end_time:
-            # find deepest best child that has not been fully solved
+        # while not time() > end_time:
+        #     # find deepest best child that has not been fully solved
             
-            # matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
-            # if not any(matching_children):
-            #     return None
-            # return max(matching_children, key=lambda child:child.score() or 0)
+        #     # matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
+        #     # if not any(matching_children):
+        #     #     return None
+        #     # return max(matching_children, key=lambda child:child.score() or 0)
             
-            best_scoring_child = base_board.best_child()
-            while any([child.score() for child in best_scoring_child.children]):
-                best_scoring_child = best_scoring_child.best_child()
+        #     best_scoring_child = base_board.best_child()
+        #     while any([child.score() for child in best_scoring_child.children]):
+        #         best_scoring_child = best_scoring_child.best_child()
             
-            # calc scores for that
-            best_scoring_child.calc_score_of_children(AI.estimated_score)
+        #     # calc scores for that
+        #     best_scoring_child.calc_score_of_children(AI.estimated_score)
             
-            print(base_board)
+        #     print(base_board)
             # sleep(1)
             
         return base_board.best_position(tile)
