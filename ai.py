@@ -120,12 +120,12 @@ class AI:
     @cache
     @staticmethod
     def get_best_position_tree(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
-        start_time = time()
+        end_time = time() + timeout
         base_board = ScoreTree(board)
         base_board.expand_children(tile)
         base_board.calc_score_of_children(AI.estimated_score)
         
-        while not (time() - start_time) > timeout:
+        while not time() > end_time:
             # find deepest best child
             best_scoring_child = base_board.best_child()
             while any(best_scoring_child.children):
