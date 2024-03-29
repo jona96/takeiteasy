@@ -24,12 +24,14 @@ class ScoreTree:
             children_scores = [child.score() or 0 for child in self.children]
             return mean(children_scores)
         
-    def best_position(self, tile:Tile = None) -> BoardPosition | None:
+    def best_child(self, tile:Tile = None):
         matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
         if not any(matching_children):
             return None
-        best_child = max(matching_children, key=lambda child:child.score() or 0)
-        return best_child.board.position_of_tile(tile)
+        return max(matching_children, key=lambda child:child.score() or 0)
+        
+    def best_position(self, tile:Tile = None) -> BoardPosition | None:
+        return self.best_child().board.position_of_tile(tile)
         
     def expand_children(self, new_tile:Tile):
         if any(self.children): return
@@ -123,6 +125,12 @@ class AI:
         base_board.expand_children(tile)
         base_board.calc_score_of_children(AI.estimated_score)
         
+        best_scoring_child = base_board.best_child()
+        for new_tile in best_scoring_child.board.remaining_tiles():
+            best_scoring_child.expand_children(new_tile)
+            best_scoring_child.calc_score_of_children(AI.estimated_score)
+            
+            
         # while not (time() - start_time) > timeout:
             # best_position_yet = base_board.best_position()
             
