@@ -1,5 +1,7 @@
 from copy import deepcopy
+from datetime import datetime, timedelta
 from statistics import mean
+from time import strftime, time
 from ai import AI
 from board import Board
 from tiles import Tile, Tiles
@@ -144,6 +146,7 @@ def get_game_score(tile_set: list[Tile] = None, timeout:float = 1) -> int:
     return board.score()
 
 scores = {}
+start_time = time()
 
 def run_test(description, tile_set, timeout, retries=10):
     key = f'{description} ({timeout}s)'
@@ -159,9 +162,8 @@ def print_results():
     print('*** Results ***')
     for key, values in scores.items():
         print(f'{key:25}: {mean(values)} {values}')
-
-
-
+    print(f'{"total":25}: {mean([mean(values) for key, values in scores.items()])}')
+    print(f'took {timedelta(seconds=time() - start_time)}')
 
 try:
     run_test('random tiles', None, 0.1, 10)
