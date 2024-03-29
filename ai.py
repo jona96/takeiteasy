@@ -22,9 +22,12 @@ class ScoreTree:
 
     def __repr__(self):
         if self.own_score is not None:
-            return str(round(self.own_score, 1))
+            repr = str(round(self.own_score, 1))
         else:
-            return '----'
+            repr = '----'
+        if any(self.children):
+            repr += f' ({round(self.score(), 1)})'
+        return repr
     
     def hasScore(self) -> bool:
         return self.score() is not None
@@ -150,6 +153,7 @@ class AI:
                 best_scoring_child.calc_score_of_children(AI.estimated_score)
             
             print(base_board)
+            # sleep(1)
             
         return base_board.best_position(tile)
         
