@@ -8,9 +8,9 @@ from time import time
 import random
 
 
-class ScoreTree:
+class ScoreNode:
     def __init__(self, position:Board, score:float = None):
-        self.children:list[ScoreTree] = []
+        self.children:list[ScoreNode] = []
         self.board = position
         self.own_score = score
     
@@ -64,7 +64,7 @@ class ScoreTree:
         for position in self.board.open_positions():
             new_board = deepcopy(self.board)
             new_board.place_tile(new_tile, position)
-            new_child = ScoreTree(new_board)
+            new_child = ScoreNode(new_board)
             self.children.append(new_child)
     
     def calc_score_of_children(self, eval_function):
@@ -147,7 +147,7 @@ class AI:
     @staticmethod
     def get_best_position_tree(board: Board, tile: Tile, timeout:int = 0.1) -> BoardPosition:
         end_time = time() + timeout
-        base_board = ScoreTree(board)
+        base_board = ScoreNode(board)
         base_board.expand_children(tile)
         base_board.calc_score_of_children(AI.estimated_score)
         print(base_board)
