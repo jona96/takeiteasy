@@ -67,14 +67,12 @@ class ScoreNodeWhereToPut(ScoreNode):
         else:
             return max(children_scores)
     
-    def best_child(self, tile:Tile = None):
+    def best_position(self, tile:Tile = None) -> BoardPosition | None:
         matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
         if not any(matching_children):
             return None
-        return max(matching_children, key=lambda child:child.score() or 0)
-        
-    def best_position(self, tile:Tile = None) -> BoardPosition | None:
-        return self.best_child().board.position_of_tile(tile)
+        best_child = max(matching_children, key=lambda child:child.score() or 0)
+        return best_child.board.position_of_tile(tile)
         
 class ScoreNodeNewRandomTile(ScoreNode):
         
