@@ -50,6 +50,14 @@ class ScoreNodeWhereToPut(ScoreNode):
         super().__init__(position, score)
         self.new_tile = new_tile
         
+    def _expand_children(self):
+        if any(self.children): return
+        for position in self.board.open_positions():
+            new_board = deepcopy(self.board)
+            new_board.place_tile(self.new_tile, position)
+            new_child = ScoreNodeNewRandomTile(new_board)
+            self.children.append(new_child)
+        
     def score(self) -> float:
         if not self.own_score:
             return None
@@ -58,14 +66,6 @@ class ScoreNodeWhereToPut(ScoreNode):
             return self.own_score
         else:
             return max(children_scores)
-        
-    def _expand_children(self):
-        if any(self.children): return
-        for position in self.board.open_positions():
-            new_board = deepcopy(self.board)
-            new_board.place_tile(self.new_tile, position)
-            new_child = ScoreNodeNewRandomTile(new_board)
-            self.children.append(new_child)
     
     def best_child(self, tile:Tile = None):
         matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
@@ -77,6 +77,13 @@ class ScoreNodeWhereToPut(ScoreNode):
         return self.best_child().board.position_of_tile(tile)
         
 class ScoreNodeNewRandomTile(ScoreNode):
+        
+    def _expand_children(self):
+        if any(self.children): return
+        for tile in self.board.remaining_tiles():
+            new_board = deepcopy(self.board)
+            new_child = ScoreNodeWhereToPut(new_board, tile)
+            self.children.append(new_child)
     
     def score(self) -> float:
         if not self.own_score:
@@ -86,13 +93,6 @@ class ScoreNodeNewRandomTile(ScoreNode):
             return self.own_score
         else:
             return mean(children_scores)
-        
-    def _expand_children(self):
-        if any(self.children): return
-        for tile in self.board.remaining_tiles():
-            new_board = deepcopy(self.board)
-            new_child = ScoreNodeWhereToPut(new_board, tile)
-            self.children.append(new_child)
     
 
 class AI:
