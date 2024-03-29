@@ -185,6 +185,12 @@ class Board:
     def tiles(self) -> dict[BoardPosition, Tile]:
         return self._tiles
 
+    def position_of_tile(self, tile:Tile) -> BoardPosition | None:
+        if tile not in self._tiles.values():
+            return None
+        else:
+            return [key for key, value in self._tiles.items() if value == tile][0]
+
     def remaining_tiles(self) -> list[Tile]:
         return [tile for tile in Tiles.ALL_TILES if tile not in self.tiles().values()]
     
