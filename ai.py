@@ -119,54 +119,25 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position_tree(board: Board, tile: Tile, timeout:int = 10) -> BoardPosition:
+    def get_best_position_tree(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
         start_time = time()
         base_board = ScoreTree(board)
         base_board.expand_children(tile)
         base_board.calc_score_of_children(AI.estimated_score)
         
-        best_scoring_child = base_board.best_child()
-        for new_tile in best_scoring_child.board.remaining_tiles():
-            best_scoring_child.expand_children(new_tile)
-            best_scoring_child.calc_score_of_children(AI.estimated_score)
+        while not (time() - start_time) > timeout:
+            # find deepest best child
+            best_scoring_child = base_board.best_child()
+            while any(best_scoring_child.children):
+                best_scoring_child = best_scoring_child.best_child()
             
-            
-        # while not (time() - start_time) > timeout:
-            # best_position_yet = base_board.best_position()
+            # calc scores for that
+            for new_tile in best_scoring_child.board.remaining_tiles():
+                best_scoring_child.expand_children(new_tile)
+                best_scoring_child.calc_score_of_children(AI.estimated_score)
             
         return base_board.best_position(tile)
         
-        # return scores.
-        
-        # scores = []
-        # # depth 1
-        # for position in board.open_positions():
-        #     simul_board = deepcopy(board)
-        #     simul_board.place_tile(tile, position)
-        #     scores += [{'pos':position, 'score': AI.estimated_score(simul_board)}]
-        # scores.sort(key=lambda x:x['score'], reverse=True) # sort with high scores first
-        # scores = scores[:width]  # keep only most promising results for further analysis
-        
-        # # depth 2
-        # if depth > 0 and len(board.open_positions()) > 1:
-        #     for score in scores:
-        #         simul_board = deepcopy(board)
-        #         simul_board.place_tile(tile, score['pos'])
-        #         scores_for_possible_next_tiles = []
-        #         for next_tile in simul_board.remaining_tiles():
-        #             best_pos_for_next_tile = AI.get_best_position(simul_board, next_tile, depth-1)
-        #             next_simul_board = deepcopy(simul_board)
-        #             next_simul_board.place_tile(next_tile, best_pos_for_next_tile)
-        #             scores_for_possible_next_tiles += [{'tile':next_tile, 'score':AI.estimated_score(next_simul_board)}]
-        #         new_score = mean([score['score'] for score in scores_for_possible_next_tiles])
-        #         scores = [s for s in scores if s['pos'] != score['pos']] # delete old evaluation
-        #         scores += [{'pos':score['pos'], 'score':new_score}] # add new evaluation
-        #     scores.sort(key=lambda x:x['score'], reverse=True) # sort with high scores first
-        
-        # highest_score = max(scores, key=lambda x:x['score'])
-        # return highest_score['pos']
-        return random.choice(board.open_positions())
-    
 if __name__ == '__main__':
     from game import Game
     from time import sleep
