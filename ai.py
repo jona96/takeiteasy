@@ -29,15 +29,26 @@ class ScoreTree:
             repr += f' ({round(self.score(), 1)})'
         return repr
     
-    def hasScore(self) -> bool:
-        return self.score() is not None
-    
     def score(self) -> float:
         if not any(self.children):
             return self.own_score
         else:
             children_scores = [child.score() or 0 for child in self.children]
             return mean(children_scores)
+        
+    def hasScore(self) -> bool:
+        return self.score() is not None
+    
+    def hasScoreForFullDepth(self) -> bool:
+        if not any(self.children):   # tree not expanded yet
+            return False
+        elif len(self.children) == 1: # last child == last tile is is placed
+            return self.children[0].hasScore()
+        else:
+            for child in self.children:
+                if not child.hasScoreForFullDepth():
+                    return False
+            return True
         
     def best_child(self, tile:Tile = None):
         matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
@@ -142,7 +153,13 @@ class AI:
         print(base_board)
         
         while not time() > end_time:
-            # find deepest best child
+            # find deepest best child that has not been fully solved
+            
+            # matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
+            # if not any(matching_children):
+            #     return None
+            # return max(matching_children, key=lambda child:child.score() or 0)
+            
             best_scoring_child = base_board.best_child()
             while any(best_scoring_child.children):
                 best_scoring_child = best_scoring_child.best_child()
