@@ -5,6 +5,36 @@ Pos = BoardPosition.from_string
 from tiles import Tile, Tiles
 from game import Game
 
+class TestBoard(unittest.TestCase):
+    
+    def test_score_1(self):
+        board = Board()
+        
+        board.place_tile(Tile(9,7,3), Pos('A1'))
+        board.place_tile(Tile(9,2,4), Pos('A2'))
+        board.place_tile(Tile(9,2,3), Pos('A3'))
+        
+        board.place_tile(Tile(5,6,8), Pos('B1'))
+        board.place_tile(Tile(5,2,8), Pos('B2'))
+        board.place_tile(Tile(1,2,4), Pos('B3'))
+        board.place_tile(Tile(5,6,3), Pos('B4'))
+        
+        board.place_tile(Tile(1,6,3), Pos('C1'))
+        board.place_tile(Tile(1,2,8), Pos('C2'))
+        board.place_tile(Tile(9,6,4), Pos('C3'))
+        board.place_tile(Tile(1,7,4), Pos('C4'))
+        board.place_tile(Tile(1,7,3), Pos('C5'))
+        
+        board.place_tile(Tile(1,2,3), Pos('D1'))
+        board.place_tile(Tile(1,6,8), Pos('D2'))
+        board.place_tile(Tile(1,7,8), Pos('D3'))
+        board.place_tile(Tile(5,7,4), Pos('D4'))
+        
+        board.place_tile(Tile(5,2,3), Pos('E1'))
+        board.place_tile(Tile(5,7,8), Pos('E2'))
+        board.place_tile(Tile(5,7,3), Pos('E3'))
+        
+        self.assertEqual(board.score(), 137)
 
 class TestAI(unittest.TestCase):
 
