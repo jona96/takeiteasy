@@ -4,6 +4,7 @@ from board import Board, BoardPosition, all_items_equal
 from copy import deepcopy
 from statistics import mean
 from functools import lru_cache as cache
+from time import time
 import random
 
 
@@ -11,14 +12,14 @@ class ScoreTree:
     def __init__(self, position:Board, score:float = None):
         self.children:list[ScoreTree] = []
         self.board = position
-        self._score = score
+        self.own_score = score
     
     def hasScore(self) -> bool:
-        return self.score is not None
+        return self.score() is not None
     
     def score(self) -> float:
         if not any(self.children):
-            return self._score
+            return self.own_score
         else:
             children_scores = [child.score() or 0 for child in self.children]
             return mean(children_scores)
@@ -112,8 +113,16 @@ class AI:
     @cache
     @staticmethod
     def get_best_position_tree(board: Board, tile: Tile, timeout:int = 10) -> BoardPosition:
+        start_time = time()
         base_board = ScoreTree(board)
         base_board.expand_children(tile)
+        for child in base_board.children:
+            if not child.hasScore():
+                child.own_score = AI.estimated_score(child.board)
+        
+        # while not (time() - start_time) > timeout:
+            # best_position_yet = base_board.best_position()
+            
         return base_board.best_position(tile)
         
         # return scores.
