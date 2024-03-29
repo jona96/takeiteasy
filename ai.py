@@ -14,6 +14,15 @@ class ScoreTree:
         self.board = position
         self.own_score = score
     
+    def __str__(self, level=0):
+        ret = '  ' * level + repr(self) + '\n'
+        for child in self.children:
+            ret += child.__str__(level+1)
+        return ret
+
+    def __repr__(self):
+        return str(self.own_score)
+    
     def hasScore(self) -> bool:
         return self.score() is not None
     
@@ -124,6 +133,7 @@ class AI:
         base_board = ScoreTree(board)
         base_board.expand_children(tile)
         base_board.calc_score_of_children(AI.estimated_score)
+        # print(base_board)
         
         while not time() > end_time:
             # find deepest best child
@@ -135,6 +145,8 @@ class AI:
             for new_tile in best_scoring_child.board.remaining_tiles():
                 best_scoring_child.expand_children(new_tile)
                 best_scoring_child.calc_score_of_children(AI.estimated_score)
+            
+            # print(base_board)
             
         return base_board.best_position(tile)
         
