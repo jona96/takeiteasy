@@ -383,7 +383,7 @@ class TestAI(unittest.TestCase):
         
         while any(board.open_positions()):
             tile = tiles.pop()
-            position = AI.get_best_position(board, tile, depth=2)
+            position = AI.get_best_position(board, tile)
             board.place_tile(tile, position)
             # board.draw()
         
@@ -425,7 +425,7 @@ class TestAI(unittest.TestCase):
         
         while any(board.open_positions()):
             tile = tiles.pop()
-            position = AI.get_best_position(board, tile, depth=2)
+            position = AI.get_best_position(board, tile)
             board.place_tile(tile, position)
             # board.draw()
         
