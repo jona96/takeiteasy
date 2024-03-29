@@ -21,7 +21,10 @@ class ScoreTree:
         return ret
 
     def __repr__(self):
-        return str(self.own_score)
+        if self.own_score is not None:
+            return str(round(self.own_score, 1))
+        else:
+            return '----'
     
     def hasScore(self) -> bool:
         return self.score() is not None
@@ -128,12 +131,12 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position_tree(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
+    def get_best_position_tree(board: Board, tile: Tile, timeout:int = 0.1) -> BoardPosition:
         end_time = time() + timeout
         base_board = ScoreTree(board)
         base_board.expand_children(tile)
         base_board.calc_score_of_children(AI.estimated_score)
-        # print(base_board)
+        print(base_board)
         
         while not time() > end_time:
             # find deepest best child
@@ -146,7 +149,7 @@ class AI:
                 best_scoring_child.expand_children(new_tile)
                 best_scoring_child.calc_score_of_children(AI.estimated_score)
             
-            # print(base_board)
+            print(base_board)
             
         return base_board.best_position(tile)
         
