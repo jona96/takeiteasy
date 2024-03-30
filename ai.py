@@ -181,39 +181,33 @@ class AI:
             
             # print(base_board)
             
-            try:
-                # level 1
-                if base_board.calc_one_child(AI.estimated_score):
-                    raise ContinueException()
-                
-                # level 2
-                for position in base_board.sorted_children()[:3]:
-                    for new_tile_board in position.children:
-                        
-                        if new_tile_board.calc_one_child(AI.estimated_score):
-                            raise ContinueException()
-
-                # level 3
-                for position in base_board.sorted_children()[:3]:
-                    for new_tile_board in position.children:
-                        
-                        for position in new_tile_board.sorted_children()[:3]:
-                            for new_tile_board in position.children:
-                                
-                                if new_tile_board.calc_one_child(AI.estimated_score):
-                                    raise ContinueException()
-
-                raise BreakException()
-            
-            except ContinueException:
-                pass
-            except BreakException:
-                break
+            if calc_one(base_board, 1, AI.estimated_score): pass
+            elif calc_one(base_board, 2, AI.estimated_score): pass
+            elif calc_one(base_board, 3, AI.estimated_score): pass
+            else: break
             
         # print(base_board)
         
         return base_board.best_position(tile)
         
+def calc_one(board: ScoreNodeNewRandomTile, level: int, function) -> bool:
+    if level == 1:
+        if board.calc_one_child(function): return True
+        return False
+    elif level == 2:
+        for position in board.sorted_children()[:3]:
+            for new_tile_board in position.children:
+                if new_tile_board.calc_one_child(function): return True
+        return False
+    elif level == 3:
+        for position in board.sorted_children()[:3]:
+            for new_tile_board in position.children:
+                for position in new_tile_board.sorted_children()[:3]:
+                    for new_tile_board in position.children:
+                        if new_tile_board.calc_one_child(function): return True
+        return False
+
+
 if __name__ == '__main__':
     from game import Game
     from time import sleep
