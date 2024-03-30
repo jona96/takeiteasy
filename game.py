@@ -9,7 +9,7 @@ class Game:
     def __init__(self, board:Board = None) -> None:
         if board:
             self.board = board
-            self.tiles = Tiles(list(board.tiles().values()))
+            self.tiles = Tiles(set(board.tiles().values()))
         else:
             self.board = Board()
             self.tiles = Tiles()

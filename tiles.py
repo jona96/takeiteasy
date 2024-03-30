@@ -17,7 +17,7 @@ class Tile:
     
 class Tiles:
 
-    ALL_TILES = [
+    ALL_TILES = {
         Tile(1, 2, 3), Tile(1, 2, 4), Tile(1, 2, 8),
         Tile(1, 6, 3), Tile(1, 6, 4), Tile(1, 6, 8),
         Tile(1, 7, 3), Tile(1, 7, 4), Tile(1, 7, 8),
@@ -27,16 +27,17 @@ class Tiles:
         Tile(9, 2, 3), Tile(9, 2, 4), Tile(9, 2, 8),
         Tile(9, 6, 3), Tile(9, 6, 4), Tile(9, 6, 8),
         Tile(9, 7, 3), Tile(9, 7, 4), Tile(9, 7, 8),
-    ]
+    }
 
-    def __init__(self, already_set_tiles: list[Tile] = []):
-        self._left_tiles = [tile for tile in Tiles.ALL_TILES if tile not in already_set_tiles]
+    def __init__(self, already_set_tiles: set[Tile] = set()):
+        self._left_tiles = Tiles.ALL_TILES - already_set_tiles
 
     def pick_tile(self):
         if not any(self._left_tiles):
             return None
-        index_of_tile = int(random.random() * len(self._left_tiles))
-        return self._left_tiles.pop(index_of_tile)
+        tile = random.sample(list(self._left_tiles), 1)[0]
+        self._left_tiles.remove(tile)
+        return tile
 
 
 if __name__ == '__main__':

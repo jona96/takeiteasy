@@ -54,7 +54,7 @@ class Board:
     ****************************************************************
 """
 
-    ALL_POSITIONS = [
+    ALL_POSITIONS = {
         BoardPosition('A', 1),
         BoardPosition('A', 2),
         BoardPosition('A', 3),
@@ -74,29 +74,29 @@ class Board:
         BoardPosition('E', 1),
         BoardPosition('E', 2),
         BoardPosition('E', 3),
-    ]
+    }
 
     SCORE_GROUPS = {
         'n1' : [
-            [ BoardPosition('A', 1), BoardPosition('A', 2), BoardPosition('A', 3) ],
-            [ BoardPosition('B', 1), BoardPosition('B', 2), BoardPosition('B', 3), BoardPosition('B', 4) ],
-            [ BoardPosition('C', 1), BoardPosition('C', 2), BoardPosition('C', 3), BoardPosition('C', 4), BoardPosition('C', 5) ],
-            [ BoardPosition('D', 1), BoardPosition('D', 2), BoardPosition('D', 3), BoardPosition('D', 4) ],
-            [ BoardPosition('E', 1), BoardPosition('E', 2), BoardPosition('E', 3) ],
+            { BoardPosition('A', 1), BoardPosition('A', 2), BoardPosition('A', 3) },
+            { BoardPosition('B', 1), BoardPosition('B', 2), BoardPosition('B', 3), BoardPosition('B', 4) },
+            { BoardPosition('C', 1), BoardPosition('C', 2), BoardPosition('C', 3), BoardPosition('C', 4), BoardPosition('C', 5) },
+            { BoardPosition('D', 1), BoardPosition('D', 2), BoardPosition('D', 3), BoardPosition('D', 4) },
+            { BoardPosition('E', 1), BoardPosition('E', 2), BoardPosition('E', 3) },
         ],
         'n2' : [
-            [ BoardPosition('A', 1), BoardPosition('B', 1), BoardPosition('C', 1) ],
-            [ BoardPosition('A', 2), BoardPosition('B', 2), BoardPosition('C', 2), BoardPosition('D', 1) ],
-            [ BoardPosition('A', 3), BoardPosition('B', 3), BoardPosition('C', 3), BoardPosition('D', 2), BoardPosition('E', 1) ],
-            [                        BoardPosition('B', 4), BoardPosition('C', 4), BoardPosition('D', 3), BoardPosition('E', 2) ],
-            [                                               BoardPosition('C', 5), BoardPosition('D', 4), BoardPosition('E', 3) ],
+            { BoardPosition('A', 1), BoardPosition('B', 1), BoardPosition('C', 1) },
+            { BoardPosition('A', 2), BoardPosition('B', 2), BoardPosition('C', 2), BoardPosition('D', 1) },
+            { BoardPosition('A', 3), BoardPosition('B', 3), BoardPosition('C', 3), BoardPosition('D', 2), BoardPosition('E', 1) },
+            {                        BoardPosition('B', 4), BoardPosition('C', 4), BoardPosition('D', 3), BoardPosition('E', 2) },
+            {                                               BoardPosition('C', 5), BoardPosition('D', 4), BoardPosition('E', 3) },
         ],
         'n3' : [
-            [                                               BoardPosition('C', 1), BoardPosition('D', 1), BoardPosition('E', 1) ],
-            [                        BoardPosition('B', 1), BoardPosition('C', 2), BoardPosition('D', 2), BoardPosition('E', 2) ],
-            [ BoardPosition('A', 1), BoardPosition('B', 2), BoardPosition('C', 3), BoardPosition('D', 3), BoardPosition('E', 3) ],
-            [ BoardPosition('A', 2), BoardPosition('B', 3), BoardPosition('C', 4), BoardPosition('D', 4) ],
-            [ BoardPosition('A', 3), BoardPosition('B', 4), BoardPosition('C', 5) ],
+            {                                               BoardPosition('C', 1), BoardPosition('D', 1), BoardPosition('E', 1) },
+            {                        BoardPosition('B', 1), BoardPosition('C', 2), BoardPosition('D', 2), BoardPosition('E', 2) },
+            { BoardPosition('A', 1), BoardPosition('B', 2), BoardPosition('C', 3), BoardPosition('D', 3), BoardPosition('E', 3) },
+            { BoardPosition('A', 2), BoardPosition('B', 3), BoardPosition('C', 4), BoardPosition('D', 4) },
+            { BoardPosition('A', 3), BoardPosition('B', 4), BoardPosition('C', 5) },
         ],
     }
 
@@ -198,11 +198,9 @@ class Board:
             return [key for key, value in self._tiles.items() if value == tile][0]
 
     def remaining_tiles(self) -> set[Tile]:
-        all_tiles = set(Tiles.ALL_TILES)
         used_tiles = set(self.tiles().values())
-        return all_tiles - used_tiles
+        return Tiles.ALL_TILES - used_tiles
     
     def open_positions(self) -> set[BoardPosition]:
-        all_positions = set(self.ALL_POSITIONS)
         used_positions = set(self.tiles().keys())
-        return all_positions - used_positions
+        return self.ALL_POSITIONS - used_positions
