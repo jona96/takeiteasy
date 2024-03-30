@@ -16,8 +16,8 @@ class ScoreNode:
     
     def __str__(self, level=0):
         ret = '  ' * level + repr(self) + '\n'
-        sorted_children = sorted(self.children, key=lambda child:child.score() or 0, reverse=True)
-        for child in sorted_children:
+        sorted = True if isinstance(self, ScoreNodeNewRandomTile) else False
+        for child in self.sorted_children if sorted else self.children:
             if child.hasScore():
                 ret += child.__str__(level+1)
         return ret
@@ -28,6 +28,10 @@ class ScoreNode:
             self._children:list[ScoreNode] = []
             self._expand_children()
         return self._children
+
+    @property
+    def sorted_children(self):
+        return sorted(self.children, key=lambda child:child.score() or 0, reverse=True)
 
     def hasScore(self) -> bool:
         return self.score() is not None
@@ -60,10 +64,10 @@ class ScoreNodeNewRandomTile(ScoreNode):
             return None
     
     def best_position(self, tile:Tile = None) -> BoardPosition | None:
-        matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
-        if not any(matching_children):
+        try:
+            best_child = self.sorted_children[0]
+        except ValueError:
             return None
-        best_child = max(matching_children, key=lambda child:child.score() or 0)
         return best_child.board.position_of_tile(tile)
         
     def calc_score_of_children(self, eval_function):
@@ -143,36 +147,26 @@ class AI:
     @staticmethod
     def get_best_position(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
         end_time = time() + timeout
-        base_board = ScoreNodeNewRandomTile(board, tile)
-        base_board.calc_score_of_children(AI.estimated_score)
-        print(base_board)
         
         # strategy:
         # - calc every position where to put the tile
         # - for the best x positions get every possible next tile
         # - calc every position where to put the next tile
         # - ...
+                
+        base_board = ScoreNodeNewRandomTile(board, tile)
+        base_board.calc_score_of_children(AI.estimated_score)
+        print(base_board)
+        
+        for position in base_board.sorted_children[:3]:
+            for new_tile in position.children:
+                new_tile.calc_score_of_children(AI.estimated_score)
+                if time() > end_time: break
+            print(base_board)
+            if time() > end_time: break
         
         
-        # while not time() > end_time:
-        #     pass
-        #     # find deepest best child that has not been fully solved
-            
-        #     # matching_children = [child for child in self.children if tile is None or tile in child.board.tiles().values()]
-        #     # if not any(matching_children):
-        #     #     return None
-        #     # return max(matching_children, key=lambda child:child.score() or 0)
-            
-        #     best_scoring_child = base_board.best_child()
-        #     while any([child.score() for child in best_scoring_child.children]):
-        #         best_scoring_child = best_scoring_child.best_child()
-            
-        #     # calc scores for that
-        #     best_scoring_child.calc_score_of_children(AI.estimated_score)
-            
-        #     print(base_board)
-            # sleep(1)
-            
+        
         return base_board.best_position(tile)
         
 if __name__ == '__main__':
@@ -186,5 +180,4 @@ if __name__ == '__main__':
         position = AI.get_best_position(game.board, game.get_tile())
         print(f'place Tile {game.get_tile()} at {position}')
         game.place_tile(position)
-        sleep(0.3)
     
