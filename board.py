@@ -202,5 +202,7 @@ class Board:
         used_tiles = set(self.tiles().values())
         return all_tiles - used_tiles
     
-    def open_positions(self) -> list[BoardPosition]:
-        return [pos for pos in self.ALL_POSITIONS if pos not in self.tiles().keys()]
+    def open_positions(self) -> set[BoardPosition]:
+        all_positions = set(self.ALL_POSITIONS)
+        used_positions = set(self.tiles().keys())
+        return all_positions - used_positions
