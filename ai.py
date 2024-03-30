@@ -165,7 +165,7 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, timeout:int = 1, debug=False) -> BoardPosition:
         end_time = time() + timeout
         
         # strategy:
@@ -176,17 +176,17 @@ class AI:
                 
         base_board = ScoreNodeNewRandomTile(tile, board)
         
-        new_tile_board = base_board
         while time() < end_time:
             
             # print(base_board)
+            try:
+                level = 1
+                while not calc_one(base_board, level, AI.estimated_score):
+                    level += 1
+            except BreakException:
+                break
             
-            if calc_one(base_board, 1, AI.estimated_score): pass
-            elif calc_one(base_board, 2, AI.estimated_score): pass
-            elif calc_one(base_board, 3, AI.estimated_score): pass
-            else: break
-            
-        # print(base_board)
+        if debug: print(base_board)
         
         return base_board.best_position(tile)
         
@@ -197,6 +197,7 @@ def calc_one(board: ScoreNodeNewRandomTile, level: int, function) -> bool:
         if board.calc_one_child(function): return True
         return False
     elif level >= 2:
+        if not any(board.children): raise BreakException()
         for position in board.sorted_children()[:3]:
             for new_tile_board in position.children:
                 if calc_one(new_tile_board, level - 1, function): return True
@@ -211,8 +212,8 @@ if __name__ == '__main__':
     game.start()
     
     for _ in range(19):
-        # position = AI.get_best_position(game.board, game.get_tile())
-        profile.run('position = AI.get_best_position(game.board, game.get_tile())', sort='tottime')
+        position = AI.get_best_position(game.board, game.get_tile(), debug=True)
+        # profile.run('position = AI.get_best_position(game.board, game.get_tile())', sort='tottime')
         print(f'place Tile {game.get_tile()} at {position}')
         game.place_tile(position)
     
