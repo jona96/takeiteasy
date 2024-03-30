@@ -139,7 +139,7 @@ def get_game_score(tile_set: list[Tile] = None, timeout:float = 1) -> int:
     
     while any(board.open_positions()):
         tile = tiles.pop()
-        position = AI.get_best_position_tree(board, tile, timeout)
+        position = AI.get_best_position(board, tile, timeout)
         board.place_tile(tile, position)
         # board.draw()
     
