@@ -148,8 +148,11 @@ class AI:
                         number = getattr(tile, nx)
                         number_list.append(number)
                 if not any(number_list):
-                    # no tile set, assume average value of 5 with some confidence level
-                    score += 5 * len(group) * 0.13
+                    # calculate propability for each possible number with remaining tiles
+                    for number in range(1, 10):
+                        remaining_tiles_with_number = [tile for tile in board.remaining_tiles() if getattr(tile, nx) == number]
+                        propability_factor = (len(remaining_tiles_with_number) / len(board.remaining_tiles())) ** len(group)
+                        score += number * len(group) * propability_factor
                 elif all_items_equal(number_list):
                     # so far all number the same
                     number = number_list[0]
@@ -204,7 +207,7 @@ if __name__ == '__main__':
     game.start()
     
     for _ in range(19):
-        position = AI.get_best_position(game.board, game.get_tile(), debug=True)
+        position = AI.get_best_position(game.board, game.get_tile(), debug=True, timeout=1)
         # profile.run('position = AI.get_best_position(game.board, game.get_tile())', sort='tottime')
         print(f'place Tile {game.get_tile()} at {position}')
         game.place_tile(position)
