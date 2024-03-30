@@ -173,10 +173,10 @@ try:
     # run_test('tile set 2', tile_set_2, 1, 5)
     # run_test('tile set 3', tile_set_3, 0.1, 10)
     # run_test('tile set 4', tile_set_4, 0.1, 10)
-    run_test('tile set 1', tile_set_1, 0.1, 3)
-    run_test('tile set 1', tile_set_1, 1, 3)
-    run_test('tile set 1', tile_set_1, 3, 3)
-    run_test('tile set 1', tile_set_1, 10, 3)
-    run_test('tile set 1', tile_set_1, 30, 3)
+    run_test('tile set 1', tile_set_1, 0.1, 1)
+    run_test('tile set 1', tile_set_1, 1, 1)
+    run_test('tile set 1', tile_set_1, 3, 1)
+    run_test('tile set 1', tile_set_1, 10, 1)
+    run_test('tile set 1', tile_set_1, 30, 1)
 except:
     pass
