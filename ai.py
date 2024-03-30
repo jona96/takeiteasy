@@ -32,8 +32,7 @@ class ScoreNode:
             self._expand_children()
         return self._children
 
-    def sorted_children(self, end_time=None):
-        # TODO use end_time
+    def sorted_children(self):
         return sorted(list(self.children), key=lambda child:child.score() or 0, reverse=True)
 
     def hasScore(self) -> bool:
@@ -193,7 +192,7 @@ class AI:
                     raise ContinueException()
                 
                 # level 2
-                for position in new_tile_board.sorted_children(end_time)[:3]:
+                for position in new_tile_board.sorted_children()[:3]:
                 # for position in new_tile_board.children:
                     for new_tile_board in position.children:
                         
