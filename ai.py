@@ -1,7 +1,6 @@
 
-from tiles import Tile, Tiles
+from tiles import Tile
 from board import Board, BoardPosition, all_items_equal
-from copy import deepcopy
 from statistics import mean
 from functools import lru_cache as cache
 from time import time
@@ -9,8 +8,8 @@ import random
 
 
 class ScoreNode:
-    def __init__(self, board:Board, parent = None):
-        self.board = board
+    def __init__(self, board:Board = None, parent = None):
+        self._board = board
         self.parent = parent
         self.own_score = None
     
@@ -38,7 +37,7 @@ class ScoreNode:
     
 class ScoreNodeNewRandomTile(ScoreNode):
     
-    def __init__(self, board: Board, new_tile:Tile, parent = None):
+    def __init__(self, new_tile:Tile, board: Board = None, parent = None):
         super().__init__(board, parent)
         self.new_tile = new_tile
         
@@ -51,10 +50,12 @@ class ScoreNodeNewRandomTile(ScoreNode):
     def _expand_children(self):
         if any(self.children): return
         for position in self.board.open_positions():
-            new_board = deepcopy(self.board)
-            new_board.place_tile(self.new_tile, position)
-            new_child = ScoreNodeWhereToPut(new_board, position, parent=self)
+            new_child = ScoreNodeWhereToPut(position, parent=self)
             self.children.append(new_child)
+            
+    @property
+    def board(self):
+        return self.parent.board if self.parent else self._board
         
     def score(self) -> float:
         children_scores = [child.score() for child in self.children if child.score()]
@@ -79,7 +80,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
 
 class ScoreNodeWhereToPut(ScoreNode):
         
-    def __init__(self, board: Board, position, parent = None):
+    def __init__(self, position, board: Board = None, parent = None):
         super().__init__(board, parent)
         self.tile_position = position
         
@@ -95,10 +96,18 @@ class ScoreNodeWhereToPut(ScoreNode):
     def _expand_children(self):
         if any(self.children): return
         for tile in self.board.remaining_tiles():
-            new_board = deepcopy(self.board)
-            new_child = ScoreNodeNewRandomTile(new_board, tile, parent=self)
+            new_child = ScoreNodeNewRandomTile(tile, parent=self)
             self.children.append(new_child)
     
+    @property
+    def board(self):
+        if self.parent and self.parent.board:
+            board_copy:Board = self.parent.board.__copy__()
+            board_copy.place_tile(self.parent.new_tile, self.tile_position)
+            return board_copy
+        else:
+            return self._board
+        
     def score(self) -> float:
         if not self.own_score:
             return None
@@ -156,7 +165,7 @@ class AI:
         # - calc every position where to put the next tile
         # - ...
                 
-        base_board = ScoreNodeNewRandomTile(board, tile)
+        base_board = ScoreNodeNewRandomTile(tile, board)
         base_board.calc_score_of_children(AI.estimated_score, end_time)
         print(base_board)
         
