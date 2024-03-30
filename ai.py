@@ -45,7 +45,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         if self.score():
             return f'{self.new_tile}: {round(self.score(), 1)}'
         else:
-            '----'
+            return '----'
     
     def _expand_children(self):
         if any(self.children): return
@@ -179,6 +179,8 @@ class AI:
         
         new_tile_board = base_board
         while time() < end_time:
+            
+            print(new_tile_board)
             
             # calc all positions for new tile
             if new_tile_board.calc_one_child(AI.estimated_score):
