@@ -15,7 +15,7 @@ class ScoreNode:
     def __init__(self, board:Board = None, parent = None):
         self._board = board
         self.parent = parent
-        self.own_score = None
+        self._score = None
     
     def __str__(self, level=0):
         ret = '  ' * level + repr(self) + '\n'
@@ -37,6 +37,14 @@ class ScoreNode:
 
     def hasScore(self) -> bool:
         return self.score() is not None
+    
+    def score(self) -> float:
+        return self._score
+    
+    def set_score(self, score: float):
+        self._score = score
+        if self.parent:
+            self.parent.update_score()
     
 class ScoreNodeNewRandomTile(ScoreNode):
     
@@ -60,14 +68,10 @@ class ScoreNodeNewRandomTile(ScoreNode):
     def board(self):
         return self.parent.board if self.parent else self._board
         
-    def score(self) -> float:
-        # TODO: improve score concept (super slow)
+    def update_score(self):
         children_scores = {child.score() for child in self.children if child.score()}
-        if any(children_scores):
-            return max(children_scores)
-        else:
-            return None
-    
+        self.set_score(max(children_scores))
+        
     def best_position(self, tile:Tile = None) -> BoardPosition | None:
         try:
             best_child = self.sorted_children()[0]
@@ -80,13 +84,13 @@ class ScoreNodeNewRandomTile(ScoreNode):
             if end_time and time() > end_time: 
                 return
             if not child.hasScore():
-                child.own_score = eval_function(child.board)
+                child.set_score(eval_function(child.board))
 
     def calc_one_child(self, eval_function) -> bool:
-        children_without_score = {child for child in self.children if not child.own_score}
+        children_without_score = {child for child in self.children if not child.score()}
         if any(children_without_score):
             selected_child = children_without_score.pop()
-            selected_child.own_score = eval_function(selected_child.board)
+            selected_child.set_score(eval_function(selected_child.board))
             return True
         else:
             return False
@@ -99,8 +103,8 @@ class ScoreNodeWhereToPut(ScoreNode):
         self.tile_position = position
         
     def __repr__(self):
-        if self.own_score is not None:
-            repr = f'{self.tile_position}: {(round(self.own_score, 1))}'
+        if self.score() is not None:
+            repr = f'{self.tile_position}: {(round(self.score(), 1))}'
             if any(self.children):
                 repr += f' ({round(self.score(), 1)})'
         else:
@@ -122,15 +126,10 @@ class ScoreNodeWhereToPut(ScoreNode):
         else:
             return self._board
         
-    def score(self) -> float:
-        if not self.own_score:
-            return None
+    def update_score(self):
         children_scores = {child.score() for child in self.children if child.score()}
-        if not any(children_scores):
-            return self.own_score
-        else:
-            return mean(children_scores)
-    
+        self.set_score(mean(children_scores))
+        
 
 class AI:
     
