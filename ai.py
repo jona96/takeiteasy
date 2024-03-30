@@ -167,13 +167,13 @@ class AI:
                 
         base_board = ScoreNodeNewRandomTile(tile, board)
         base_board.calc_score_of_children(AI.estimated_score, end_time)
-        print(base_board)
+        # print(base_board)
         
         for position in base_board.sorted_children[:3]:
             for new_tile in position.children:
                 new_tile.calc_score_of_children(AI.estimated_score)
                 if time() > end_time: break
-            print(base_board)
+            # print(base_board)
             if time() > end_time: break
         
         
