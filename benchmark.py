@@ -161,8 +161,8 @@ def print_results():
     print('')
     print('*** Results ***')
     for key, values in scores.items():
-        print(f'{key:25}: {mean(values)} {values}')
-    print(f'{"total":25}: {mean([mean(values) for key, values in scores.items()])}')
+        print(f'{key:25}: {round(mean(values), 1)} {values}')
+    print(f'{"total":25}: {mean([round(mean(values), 1) for key, values in scores.items()])}')
     print(f'took {timedelta(seconds=time() - start_time)}')
 
 try:
