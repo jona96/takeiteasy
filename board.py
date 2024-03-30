@@ -197,8 +197,10 @@ class Board:
         else:
             return [key for key, value in self._tiles.items() if value == tile][0]
 
-    def remaining_tiles(self) -> list[Tile]:
-        return [tile for tile in Tiles.ALL_TILES if tile not in self.tiles().values()]
+    def remaining_tiles(self) -> set[Tile]:
+        all_tiles = set(Tiles.ALL_TILES)
+        used_tiles = set(self.tiles().values())
+        return all_tiles - used_tiles
     
     def open_positions(self) -> list[BoardPosition]:
         return [pos for pos in self.ALL_POSITIONS if pos not in self.tiles().keys()]
