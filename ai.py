@@ -122,6 +122,7 @@ class ScoreNodeWhereToPut(ScoreNode):
         else:
             return self._board
         
+    @cache
     def score(self) -> float:
         if not self.own_score:
             return None
