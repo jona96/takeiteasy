@@ -33,13 +33,13 @@ class ScoreNode:
         return self._children
 
     def sorted_children(self):
-        return sorted(list(self.children), key=lambda child:child.score() or 0, reverse=True)
+        return sorted(list(self.children), key=lambda child:child.score(default=0), reverse=True)
 
     def hasScore(self) -> bool:
         return self.score() is not None
     
-    def score(self) -> float:
-        return self._score
+    def score(self, default=None) -> float:
+        return self._score or default
     
     def set_score(self, score: float):
         self._score = score
@@ -53,7 +53,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         self.new_tile = new_tile
         
     def __repr__(self):
-        return f'{self.new_tile}: {(round(self.score(), 1))}' if self.score() else '----'
+        return f'{self.new_tile}: {(round(self.score(), 1))}' if self.hasScore() else '----'
     
     def _expand_children(self):
         if any(self.children): return
@@ -66,7 +66,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         return self.parent.board if self.parent else self._board
         
     def update_score(self):
-        children_scores = {child.score() for child in self.children if child.score()}
+        children_scores = {child.score() for child in self.children if child.hasScore()}
         self.set_score(max(children_scores))
         
     def best_position(self, tile:Tile = None) -> BoardPosition | None:
@@ -84,7 +84,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
                 child.set_score(eval_function(child.board))
 
     def calc_one_child(self, eval_function) -> bool:
-        children_without_score = {child for child in self.children if not child.score()}
+        children_without_score = {child for child in self.children if not child.hasScore()}
         if any(children_without_score):
             selected_child = children_without_score.pop()
             selected_child.set_score(eval_function(selected_child.board))
@@ -100,7 +100,7 @@ class ScoreNodeWhereToPut(ScoreNode):
         self.tile_position = position
         
     def __repr__(self):
-        return f'{self.tile_position}: {(round(self.score(), 1))}' if self.score() else '----'
+        return f'{self.tile_position}: {(round(self.score(), 1))}' if self.hasScore() else '----'
     
     def _expand_children(self):
         if any(self.children): return
@@ -118,7 +118,7 @@ class ScoreNodeWhereToPut(ScoreNode):
             return self._board
         
     def update_score(self):
-        children_scores = {child.score() for child in self.children if child.score()}
+        children_scores = {child.score() for child in self.children if child.hasScore()}
         self.set_score(mean(children_scores))
         
 
