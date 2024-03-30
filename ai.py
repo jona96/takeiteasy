@@ -70,8 +70,10 @@ class ScoreNodeNewRandomTile(ScoreNode):
             return None
         return best_child.board.position_of_tile(tile)
         
-    def calc_score_of_children(self, eval_function):
+    def calc_score_of_children(self, eval_function, end_time:float = None):
         for child in self.children:
+            if end_time and time() > end_time: 
+                return
             if not child.hasScore():
                 child.own_score = eval_function(child.board)
 
@@ -155,7 +157,7 @@ class AI:
         # - ...
                 
         base_board = ScoreNodeNewRandomTile(board, tile)
-        base_board.calc_score_of_children(AI.estimated_score)
+        base_board.calc_score_of_children(AI.estimated_score, end_time)
         print(base_board)
         
         for position in base_board.sorted_children[:3]:
