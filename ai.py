@@ -28,13 +28,13 @@ class ScoreNode:
     @property
     def children(self):
         if not hasattr(self, '_children'):
-            self._children:list[ScoreNode] = []
+            self._children:set[ScoreNode] = set()
             self._expand_children()
         return self._children
 
     @property
     def sorted_children(self):
-        return sorted(self.children, key=lambda child:child.score() or 0, reverse=True)
+        return sorted(list(self.children), key=lambda child:child.score() or 0, reverse=True)
 
     def hasScore(self) -> bool:
         return self.score() is not None
@@ -55,14 +55,14 @@ class ScoreNodeNewRandomTile(ScoreNode):
         if any(self.children): return
         for position in self.board.open_positions():
             new_child = ScoreNodeWhereToPut(position, parent=self)
-            self.children.append(new_child)
+            self.children.add(new_child)
             
     @property
     def board(self):
         return self.parent.board if self.parent else self._board
         
     def score(self) -> float:
-        children_scores = [child.score() for child in self.children if child.score()]
+        children_scores = {child.score() for child in self.children if child.score()}
         if any(children_scores):
             return max(children_scores)
         else:
@@ -83,9 +83,9 @@ class ScoreNodeNewRandomTile(ScoreNode):
                 child.own_score = eval_function(child.board)
 
     def calc_one_child(self, eval_function) -> bool:
-        children_without_score = [child for child in self.children if not child.own_score]
+        children_without_score = {child for child in self.children if not child.own_score}
         if any(children_without_score):
-            selected_child = children_without_score[0]
+            selected_child = children_without_score.pop()
             selected_child.own_score = eval_function(selected_child.board)
             return True
         else:
@@ -111,7 +111,7 @@ class ScoreNodeWhereToPut(ScoreNode):
         if any(self.children): return
         for tile in self.board.remaining_tiles():
             new_child = ScoreNodeNewRandomTile(tile, parent=self)
-            self.children.append(new_child)
+            self.children.add(new_child)
     
     @property
     def board(self):
@@ -125,7 +125,7 @@ class ScoreNodeWhereToPut(ScoreNode):
     def score(self) -> float:
         if not self.own_score:
             return None
-        children_scores = [child.score() for child in self.children if child.score()]
+        children_scores = {child.score() for child in self.children if child.score()}
         if not any(children_scores):
             return self.own_score
         else:
