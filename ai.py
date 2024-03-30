@@ -53,7 +53,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         self.new_tile = new_tile
         
     def __repr__(self):
-        return f'{self.new_tile}: {(round(self.score(), 1))}' if self.hasScore() else '----'
+        return f'{self.new_tile}: {round(self.score(), 1) if self.hasScore() else "----"}'
     
     def _expand_children(self):
         if any(self.children): return
@@ -66,8 +66,13 @@ class ScoreNodeNewRandomTile(ScoreNode):
         return self.parent.board if self.parent else self._board
         
     def update_score(self):
-        children_scores = {child.score() for child in self.children if child.hasScore()}
-        self.set_score(max(children_scores))
+        # children_scores = {child.score() for child in self.children if child.hasScore()}
+        # self.set_score(max(children_scores))
+        
+        try:
+            self.set_score(max([child.score() for child in self.children]))
+        except TypeError:   # not every child has a score
+            pass
         
     def best_position(self, tile:Tile = None) -> BoardPosition | None:
         try:
@@ -84,7 +89,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         children_without_score = {child for child in self.children if not child.hasScore()}
         if any(children_without_score):
             selected_child = children_without_score.pop()
-            print(f'{" " * self.number_of_parents()}calc {self.new_tile} at {selected_child.tile_position}')
+            # print(f'{"_" * self.number_of_parents()}calc {self.new_tile} at {selected_child.tile_position}')
             selected_child.set_score(eval_function(selected_child.board))
             return True
         else:
@@ -98,7 +103,7 @@ class ScoreNodeWhereToPut(ScoreNode):
         self.tile_position = position
         
     def __repr__(self):
-        return f'{self.tile_position}: {(round(self.score(), 1))}' if self.hasScore() else '----'
+        return f'{self.tile_position}: {round(self.score(), 1) if self.hasScore() else "----"}'
     
     def _expand_children(self):
         if any(self.children): return
@@ -116,8 +121,10 @@ class ScoreNodeWhereToPut(ScoreNode):
             return self._board
         
     def update_score(self):
-        children_scores = {child.score() for child in self.children if child.hasScore()}
-        self.set_score(mean(children_scores))
+        try:
+            self.set_score(mean([child.score() for child in self.children]))
+        except TypeError:   # not every child has a score
+            pass
         
 
 class AI:
@@ -158,7 +165,7 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, timeout:int = 10) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, timeout:int = 10000) -> BoardPosition:
         end_time = time() + timeout
         
         # strategy:
@@ -172,22 +179,22 @@ class AI:
         new_tile_board = base_board
         while time() < end_time:
             
-            # print(new_tile_board)
+            # print(base_board)
             
             try:
                 # level 1
-                if new_tile_board.calc_one_child(AI.estimated_score):
+                if base_board.calc_one_child(AI.estimated_score):
                     raise ContinueException()
                 
                 # level 2
-                for position in new_tile_board.sorted_children()[:3]:
+                for position in base_board.sorted_children()[:3]:
                     for new_tile_board in position.children:
                         
                         if new_tile_board.calc_one_child(AI.estimated_score):
                             raise ContinueException()
 
                 # level 3
-                for position in new_tile_board.sorted_children()[:3]:
+                for position in base_board.sorted_children()[:3]:
                     for new_tile_board in position.children:
                         
                         for position in new_tile_board.sorted_children()[:3]:
