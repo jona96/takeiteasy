@@ -183,21 +183,20 @@ class AI:
                 
                 # level 2
                 for position in new_tile_board.sorted_children()[:3]:
-                # for position in new_tile_board.children:
                     for new_tile_board in position.children:
                         
                         if new_tile_board.calc_one_child(AI.estimated_score):
                             raise ContinueException()
 
                 # level 3
-                # for position in new_tile_board.sorted_children(end_time)[:3]:
-                #     for new_tile_board in position.children:
+                for position in new_tile_board.sorted_children()[:3]:
+                    for new_tile_board in position.children:
                         
-                #         for position in new_tile_board.sorted_children[:3]:
-                #             for new_tile_board in position.children:
+                        for position in new_tile_board.sorted_children()[:3]:
+                            for new_tile_board in position.children:
                                 
-                #                 if new_tile_board.calc_one_child(AI.estimated_score):
-                #                     raise ContinueException()
+                                if new_tile_board.calc_one_child(AI.estimated_score):
+                                    raise ContinueException()
 
                 raise BreakException()
             
