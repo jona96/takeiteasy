@@ -165,7 +165,7 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, timeout:int = 5) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
         end_time = time() + timeout
         
         # strategy:
@@ -191,20 +191,15 @@ class AI:
         return base_board.best_position(tile)
         
 def calc_one(board: ScoreNodeNewRandomTile, level: int, function) -> bool:
-    if level == 1:
+    if level == 0:
+        return False
+    elif level == 1:
         if board.calc_one_child(function): return True
         return False
-    elif level == 2:
+    elif level >= 2:
         for position in board.sorted_children()[:3]:
             for new_tile_board in position.children:
-                if new_tile_board.calc_one_child(function): return True
-        return False
-    elif level == 3:
-        for position in board.sorted_children()[:3]:
-            for new_tile_board in position.children:
-                for position in new_tile_board.sorted_children()[:3]:
-                    for new_tile_board in position.children:
-                        if new_tile_board.calc_one_child(function): return True
+                if calc_one(new_tile_board, level - 1, function): return True
         return False
 
 
