@@ -148,15 +148,6 @@ def get_game_score(tile_set: list[Tile] = None, timeout:float = 1) -> int:
 scores = {}
 start_time = time()
 
-def run_test(description, tile_set, timeout, retries=10):
-    key = f'{description} ({timeout}s)'
-    print(key + ' ', end='', flush=True)
-    scores[key] = []
-    for _ in range(retries):
-        scores[key].append(get_game_score(tile_set, timeout=timeout))
-        print('.', end='', flush=True)
-    print('')
-
 def print_results():
     print('')
     print('*** Results ***')
@@ -164,6 +155,13 @@ def print_results():
         print(f'{key:25}: {round(mean(values), 1)} {values}')
     print(f'{"total":25}: {mean([round(mean(values), 1) for key, values in scores.items()])}')
     print(f'took {timedelta(seconds=time() - start_time)}')
+
+def run_test(description, tile_set, timeout, retries=10):
+    key = f'{description} ({timeout}s)'
+    scores[key] = []
+    for _ in range(retries):
+        scores[key].append(get_game_score(tile_set, timeout=timeout))
+    print_results()
 
 try:
     # run_test('random tiles', None, 0.1, 10)
@@ -176,14 +174,9 @@ try:
     # run_test('tile set 3', tile_set_3, 0.1, 10)
     # run_test('tile set 4', tile_set_4, 0.1, 10)
     run_test('tile set 1', tile_set_1, 0.1, 3)
-    print_results()
     run_test('tile set 1', tile_set_1, 1, 3)
-    print_results()
     run_test('tile set 1', tile_set_1, 3, 3)
-    print_results()
     run_test('tile set 1', tile_set_1, 10, 3)
-    print_results()
     run_test('tile set 1', tile_set_1, 30, 3)
 except:
     pass
-print_results()
