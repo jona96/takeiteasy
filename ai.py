@@ -20,7 +20,7 @@ class ScoreNode:
     def __str__(self, level=0):
         ret = '  ' * level + repr(self) + '\n'
         sorted = True if isinstance(self, ScoreNodeNewRandomTile) else False
-        for child in self.sorted_children if sorted else self.children:
+        for child in self.sorted_children() if sorted else self.children:
             if child.hasScore():
                 ret += child.__str__(level+1)
         return ret
@@ -32,8 +32,7 @@ class ScoreNode:
             self._expand_children()
         return self._children
 
-    @property
-    def sorted_children(self):
+    def sorted_children(self, end_time=None):
         return sorted(list(self.children), key=lambda child:child.score() or 0, reverse=True)
 
     def hasScore(self) -> bool:
@@ -70,7 +69,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
     
     def best_position(self, tile:Tile = None) -> BoardPosition | None:
         try:
-            best_child = self.sorted_children[0]
+            best_child = self.sorted_children()[0]
         except ValueError:
             return None
         return best_child.board.position_of_tile(tile)
@@ -192,7 +191,7 @@ class AI:
                     raise ContinueException()
                 
                 # level 2
-                for position in new_tile_board.sorted_children[:3]:
+                for position in new_tile_board.sorted_children()[:3]:
                 # for position in new_tile_board.children:
                     for new_tile_board in position.children:
                         
