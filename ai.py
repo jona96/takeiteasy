@@ -1,11 +1,15 @@
 
+from copy import copy
 from tiles import Tile
 from board import Board, BoardPosition, all_items_equal
 from statistics import mean
 from functools import lru_cache as cache
 from time import time
 import random
+import cProfile as profile
 
+class ContinueException(Exception): pass
+class BreakException(Exception): pass
 
 class ScoreNode:
     def __init__(self, board:Board = None, parent = None):
@@ -112,7 +116,7 @@ class ScoreNodeWhereToPut(ScoreNode):
     @property
     def board(self):
         if self.parent and self.parent.board:
-            board_copy:Board = self.parent.board.__copy__()
+            board_copy:Board = copy(self.parent.board)
             board_copy.place_tile(self.parent.new_tile, self.tile_position)
             return board_copy
         else:
@@ -166,7 +170,7 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, timeout:int = 4) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
         end_time = time() + timeout
         
         # strategy:
@@ -180,21 +184,37 @@ class AI:
         new_tile_board = base_board
         while time() < end_time:
             
-            print(new_tile_board)
+            # print(new_tile_board)
             
-            # calc all positions for new tile
-            if new_tile_board.calc_one_child(AI.estimated_score):
-                continue
+            try:
+                # level 1
+                if new_tile_board.calc_one_child(AI.estimated_score):
+                    raise ContinueException()
+                
+                # level 2
+                for position in new_tile_board.sorted_children[:3]:
+                # for position in new_tile_board.children:
+                    for new_tile_board in position.children:
+                        
+                        if new_tile_board.calc_one_child(AI.estimated_score):
+                            raise ContinueException()
+
+                # level 3
+                # for position in new_tile_board.sorted_children[:3]:
+                #     for new_tile_board in position.children:
+                        
+                #         for position in new_tile_board.sorted_children[:3]:
+                #             for new_tile_board in position.children:
+                                
+                #                 if new_tile_board.calc_one_child(AI.estimated_score):
+                #                     raise ContinueException()
+
+                raise BreakException()
             
-            # calc all possible new tiles (means all postions for that tile) for best 3 positions
-            for position in new_tile_board.sorted_children[:3]:
-                for new_tile_child in position.children:
-                    
-                    if new_tile_child.calc_one_child(AI.estimated_score):
-                        continue
-                    
-            break
-        
+            except ContinueException:
+                pass
+            except BreakException:
+                break
         # base_board.calc_score_of_children(AI.estimated_score, end_time)
         # # print(base_board)
         
@@ -217,7 +237,8 @@ if __name__ == '__main__':
     game.start()
     
     for _ in range(19):
-        position = AI.get_best_position(game.board, game.get_tile())
+        # position = AI.get_best_position(game.board, game.get_tile())
+        profile.run('position = AI.get_best_position(game.board, game.get_tile())', sort='tottime')
         print(f'place Tile {game.get_tile()} at {position}')
         game.place_tile(position)
     
