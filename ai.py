@@ -53,10 +53,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         self.new_tile = new_tile
         
     def __repr__(self):
-        if self.score():
-            return f'{self.new_tile}: {round(self.score(), 1)}'
-        else:
-            return '----'
+        return f'{self.new_tile}: {(round(self.score(), 1))}' if self.score() else '----'
     
     def _expand_children(self):
         if any(self.children): return
@@ -103,13 +100,7 @@ class ScoreNodeWhereToPut(ScoreNode):
         self.tile_position = position
         
     def __repr__(self):
-        if self.score() is not None:
-            repr = f'{self.tile_position}: {(round(self.score(), 1))}'
-            if any(self.children):
-                repr += f' ({round(self.score(), 1)})'
-        else:
-            repr = '----'
-        return repr
+        return f'{self.tile_position}: {(round(self.score(), 1))}' if self.score() else '----'
     
     def _expand_children(self):
         if any(self.children): return
