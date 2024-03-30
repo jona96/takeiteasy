@@ -76,10 +76,15 @@ class ScoreNodeNewRandomTile(ScoreNode):
             return None
         return best_child.board.position_of_tile(tile)
         
+    def number_of_parents(self) -> int:
+        if not self.parent or not self.parent.parent: return 0
+        else: return self.parent.parent.number_of_parents() + 1
+    
     def calc_one_child(self, eval_function) -> bool:
         children_without_score = {child for child in self.children if not child.hasScore()}
         if any(children_without_score):
             selected_child = children_without_score.pop()
+            print(f'{" " * self.number_of_parents()}calc {self.new_tile} at {selected_child.tile_position}')
             selected_child.set_score(eval_function(selected_child.board))
             return True
         else:
@@ -153,7 +158,7 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, timeout:int = 10) -> BoardPosition:
         end_time = time() + timeout
         
         # strategy:
