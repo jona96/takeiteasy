@@ -1,5 +1,6 @@
 
 from copy import copy
+import sys
 from tiles import Tile
 from board import Board, BoardPosition, all_items_equal
 from statistics import mean
@@ -175,7 +176,9 @@ class AI:
             return False
         elif level >= 2:
             if not any(board.children): raise BreakException()
-            for position in board.sorted_children()[:3]:
+            best_children = board.sorted_children()[:3]
+            random.shuffle(best_children)
+            for position in best_children:
                 for new_tile_board in position.children:
                     if AI.calc_one(new_tile_board, level - 1, function): return True
             return False
@@ -194,6 +197,12 @@ class AI:
                     level += 1
             except BreakException:
                 break
+            except KeyboardInterrupt:
+                break
+            
+            if debug:
+                sys.stdout.write('\r' + '  '.join([f'{child.board.position_of_tile(base_board.new_tile)} ({round(child.score(0), 1)})' for child in base_board.sorted_children()[:3]]))
+                sys.stdout.flush()
             
         if debug: print(base_board)
         return base_board.best_position(tile)
@@ -207,7 +216,7 @@ if __name__ == '__main__':
     game.start()
     
     for _ in range(19):
-        position = AI.get_best_position(game.board, game.get_tile(), debug=True, timeout=1)
+        position = AI.get_best_position(game.board, game.get_tile(), debug=True, timeout=30)
         # profile.run('position = AI.get_best_position(game.board, game.get_tile())', sort='tottime')
         print(f'place Tile {game.get_tile()} at {position}')
         game.place_tile(position)
