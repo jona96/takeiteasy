@@ -163,46 +163,38 @@ class AI:
 
         return score
     
+    @staticmethod
+    def calc_one(board: ScoreNodeNewRandomTile, level: int, function) -> bool:
+        if level == 0:
+            return False
+        elif level == 1:
+            if board.calc_one_child(function): return True
+            return False
+        elif level >= 2:
+            if not any(board.children): raise BreakException()
+            for position in board.sorted_children()[:3]:
+                for new_tile_board in position.children:
+                    if AI.calc_one(new_tile_board, level - 1, function): return True
+            return False
+
     @cache
     @staticmethod
     def get_best_position(board: Board, tile: Tile, timeout:int = 1, debug=False) -> BoardPosition:
+        
         end_time = time() + timeout
-        
-        # strategy:
-        # - calc every position where to put the tile
-        # - for the best x positions get every possible next tile
-        # - calc every position where to put the next tile
-        # - ...
-                
         base_board = ScoreNodeNewRandomTile(tile, board)
-        
         while time() < end_time:
-            
             # print(base_board)
             try:
                 level = 1
-                while not calc_one(base_board, level, AI.estimated_score):
+                while not AI.calc_one(base_board, level, AI.estimated_score):
                     level += 1
             except BreakException:
                 break
             
         if debug: print(base_board)
-        
         return base_board.best_position(tile)
         
-def calc_one(board: ScoreNodeNewRandomTile, level: int, function) -> bool:
-    if level == 0:
-        return False
-    elif level == 1:
-        if board.calc_one_child(function): return True
-        return False
-    elif level >= 2:
-        if not any(board.children): raise BreakException()
-        for position in board.sorted_children()[:3]:
-            for new_tile_board in position.children:
-                if calc_one(new_tile_board, level - 1, function): return True
-        return False
-
 
 if __name__ == '__main__':
     from game import Game
