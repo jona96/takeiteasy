@@ -148,8 +148,8 @@ class AI:
                         number = getattr(tile, nx)
                         number_list.append(number)
                 if not any(number_list):
-                    # no tile set, assume average value of 5 with average propability of 50%
-                    score += 5 * len(group) * 0.2
+                    # no tile set, assume average value of 5 with some confidence level
+                    score += 5 * len(group) * 0.13
                 elif all_items_equal(number_list):
                     # so far all number the same
                     number = number_list[0]
@@ -184,7 +184,7 @@ class AI:
         end_time = time() + timeout
         base_board = ScoreNodeNewRandomTile(tile, board)
         while time() < end_time:
-            # print(base_board)
+            # if debug: print(base_board)
             try:
                 level = 1
                 while not AI.calc_one(base_board, level, AI.estimated_score):
