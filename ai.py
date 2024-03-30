@@ -165,7 +165,7 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, timeout:int = 10000) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, timeout:int = 5) -> BoardPosition:
         end_time = time() + timeout
         
         # strategy:
@@ -209,6 +209,8 @@ class AI:
                 pass
             except BreakException:
                 break
+            
+        # print(base_board)
         
         return base_board.best_position(tile)
         
