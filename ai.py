@@ -22,15 +22,6 @@ class ScoreNode:
                 ret += child.__str__(level+1)
         return ret
 
-    def __repr__(self): # TODO: remove
-        if self.own_score is not None:
-            repr = str(round(self.own_score, 1))
-            if any(self.children):
-                repr += f' ({round(self.score(), 1)})'
-        else:
-            repr = '----'
-        return repr
-    
     @property
     def children(self):
         if not hasattr(self, '_children'):
