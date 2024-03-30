@@ -1,3 +1,4 @@
+from copy import copy
 from dataclasses import dataclass
 from tiles import Tile, Tiles
 
@@ -101,6 +102,11 @@ class Board:
 
     def __init__(self):
         self._tiles = {}  # layout BoardPosition('A', 1) : Tile(1, 2, 3)
+
+    def __copy__(self):
+        self_copy = Board()
+        self_copy._tiles = copy(self._tiles)
+        return self_copy
 
     def place_tile(self, tile: Tile, position: BoardPosition):
         assert position in self.open_positions()
