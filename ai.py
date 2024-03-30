@@ -76,13 +76,6 @@ class ScoreNodeNewRandomTile(ScoreNode):
             return None
         return best_child.board.position_of_tile(tile)
         
-    def calc_score_of_children(self, eval_function, end_time:float = None):
-        for child in self.children:
-            if end_time and time() > end_time: 
-                return
-            if not child.hasScore():
-                child.set_score(eval_function(child.board))
-
     def calc_one_child(self, eval_function) -> bool:
         children_without_score = {child for child in self.children if not child.hasScore()}
         if any(children_without_score):
