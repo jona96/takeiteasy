@@ -176,7 +176,10 @@ class AI:
             return False
         elif level >= 2:
             if not any(board.children): raise BreakException()
-            best_children = board.sorted_children()[:3]
+            best_children = board.sorted_children()
+            max_score = best_children[0].score()
+            best_children = [child for child in best_children if child.score() > (max_score * 0.9)]
+            if len(best_children) == 1: raise BreakException() # result is pretty clear already
             random.shuffle(best_children)
             for position in best_children:
                 for new_tile_board in position.children:
@@ -201,7 +204,7 @@ class AI:
                 break
             
             if debug:
-                sys.stdout.write('\r' + '  '.join([f'{child.board.position_of_tile(base_board.new_tile)} ({round(child.score(0), 1)})' for child in base_board.sorted_children()[:3]]))
+                sys.stdout.write('\r' + '  '.join([f'{child.board.position_of_tile(base_board.new_tile)} ({round(child.score(0), 2)})' for child in base_board.sorted_children()[:5]]))
                 sys.stdout.flush()
             
         if debug: print(base_board)
@@ -216,7 +219,7 @@ if __name__ == '__main__':
     game.start()
     
     for _ in range(19):
-        position = AI.get_best_position(game.board, game.get_tile(), debug=True, timeout=30)
+        position = AI.get_best_position(game.board, game.get_tile(), debug=True, timeout=5)
         # profile.run('position = AI.get_best_position(game.board, game.get_tile())', sort='tottime')
         print(f'place Tile {game.get_tile()} at {position}')
         game.place_tile(position)
