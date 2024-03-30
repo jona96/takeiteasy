@@ -78,6 +78,16 @@ class ScoreNodeNewRandomTile(ScoreNode):
             if not child.hasScore():
                 child.own_score = eval_function(child.board)
 
+    def calc_one_child(self, eval_function) -> bool:
+        children_without_score = [child for child in self.children if not child.own_score]
+        if any(children_without_score):
+            selected_child = children_without_score[0]
+            selected_child.own_score = eval_function(selected_child.board)
+            return True
+        else:
+            return False
+            
+
 class ScoreNodeWhereToPut(ScoreNode):
         
     def __init__(self, position, board: Board = None, parent = None):
@@ -156,7 +166,7 @@ class AI:
     
     @cache
     @staticmethod
-    def get_best_position(board: Board, tile: Tile, timeout:int = 1) -> BoardPosition:
+    def get_best_position(board: Board, tile: Tile, timeout:int = 4) -> BoardPosition:
         end_time = time() + timeout
         
         # strategy:
@@ -166,15 +176,32 @@ class AI:
         # - ...
                 
         base_board = ScoreNodeNewRandomTile(tile, board)
-        base_board.calc_score_of_children(AI.estimated_score, end_time)
-        # print(base_board)
         
-        for position in base_board.sorted_children[:3]:
-            for new_tile in position.children:
-                new_tile.calc_score_of_children(AI.estimated_score)
-                if time() > end_time: break
-            # print(base_board)
-            if time() > end_time: break
+        new_tile_board = base_board
+        while time() < end_time:
+            
+            # calc all positions for new tile
+            if new_tile_board.calc_one_child(AI.estimated_score):
+                continue
+            
+            # calc all possible new tiles (means all postions for that tile) for best 3 positions
+            for position in new_tile_board.sorted_children[:3]:
+                for new_tile_child in position.children:
+                    
+                    if new_tile_child.calc_one_child(AI.estimated_score):
+                        continue
+                    
+            break
+        
+        # base_board.calc_score_of_children(AI.estimated_score, end_time)
+        # # print(base_board)
+        
+        # for position in base_board.sorted_children[:3]:
+        #     for new_tile in position.children:
+        #         new_tile.calc_score_of_children(AI.estimated_score)
+        #         if time() > end_time: break
+        #     # print(base_board)
+        #     if time() > end_time: break
         
         
         
