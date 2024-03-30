@@ -167,9 +167,9 @@ try:
     run_test('random tiles', None, 0.1, 5)
     run_test('random tiles', None, 1, 3)
     run_test('tile set 1', tile_set_1, 1, 1)
-    run_test('tile set 1', tile_set_2, 1, 1)
-    run_test('tile set 1', tile_set_3, 1, 1)
-    run_test('tile set 1', tile_set_4, 1, 1)
+    run_test('tile set 2', tile_set_2, 1, 1)
+    run_test('tile set 3', tile_set_3, 1, 1)
+    run_test('tile set 4', tile_set_4, 1, 1)
     run_test('random tiles', None, 3, 1)
 except:
     pass
