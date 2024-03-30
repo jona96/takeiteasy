@@ -33,6 +33,7 @@ class ScoreNode:
         return self._children
 
     def sorted_children(self, end_time=None):
+        # TODO use end_time
         return sorted(list(self.children), key=lambda child:child.score() or 0, reverse=True)
 
     def hasScore(self) -> bool:
@@ -61,6 +62,7 @@ class ScoreNodeNewRandomTile(ScoreNode):
         return self.parent.board if self.parent else self._board
         
     def score(self) -> float:
+        # TODO: improve score concept (super slow)
         children_scores = {child.score() for child in self.children if child.score()}
         if any(children_scores):
             return max(children_scores)
@@ -191,7 +193,7 @@ class AI:
                     raise ContinueException()
                 
                 # level 2
-                for position in new_tile_board.sorted_children()[:3]:
+                for position in new_tile_board.sorted_children(end_time)[:3]:
                 # for position in new_tile_board.children:
                     for new_tile_board in position.children:
                         
@@ -199,7 +201,7 @@ class AI:
                             raise ContinueException()
 
                 # level 3
-                # for position in new_tile_board.sorted_children[:3]:
+                # for position in new_tile_board.sorted_children(end_time)[:3]:
                 #     for new_tile_board in position.children:
                         
                 #         for position in new_tile_board.sorted_children[:3]:
