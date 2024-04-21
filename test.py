@@ -9,7 +9,7 @@ from game import Game
 
 def full_board(n:int = 1):
     boards = {}
-    
+
     """ board 1
     ****************************************************************
     *                               C                              *
@@ -39,36 +39,36 @@ def full_board(n:int = 1):
     """
 
     boards[1] = Board()
-    
+
     boards[1].place_tile(Tile(9,7,3), Pos('A1'))
     boards[1].place_tile(Tile(9,2,4), Pos('A2'))
     boards[1].place_tile(Tile(9,2,3), Pos('A3'))
-    
+
     boards[1].place_tile(Tile(5,6,8), Pos('B1'))
     boards[1].place_tile(Tile(5,2,8), Pos('B2'))
     boards[1].place_tile(Tile(1,2,4), Pos('B3'))
     boards[1].place_tile(Tile(5,6,3), Pos('B4'))
-    
+
     boards[1].place_tile(Tile(1,6,3), Pos('C1'))
     boards[1].place_tile(Tile(1,2,8), Pos('C2'))
     boards[1].place_tile(Tile(9,6,4), Pos('C3'))
     boards[1].place_tile(Tile(1,7,4), Pos('C4'))
     boards[1].place_tile(Tile(1,7,3), Pos('C5'))
-    
+
     boards[1].place_tile(Tile(1,2,3), Pos('D1'))
     boards[1].place_tile(Tile(1,6,8), Pos('D2'))
     boards[1].place_tile(Tile(1,7,8), Pos('D3'))
     boards[1].place_tile(Tile(5,7,4), Pos('D4'))
-    
+
     boards[1].place_tile(Tile(5,2,3), Pos('E1'))
     boards[1].place_tile(Tile(5,7,8), Pos('E2'))
     boards[1].place_tile(Tile(5,7,3), Pos('E3'))
-    
+
     return boards[n]
      
 def half_board(n:int = 1):
     boards = {}
-    
+
     """ board 1
     ****************************************************************
     *                               C                              *
@@ -95,22 +95,22 @@ def half_board(n:int = 1):
     *                        5  \_______/  5                       *
     *                                                              *
     ****************************************************************
-    
+
     """
 
     boards[1] = Board()
-    
+
     boards[1].place_tile(Tile(5,2,8), Pos('A1'))
     boards[1].place_tile(Tile(5,6,4), Pos('A2'))
-    
+
     boards[1].place_tile(Tile(1,2,3), Pos('B1'))
     boards[1].place_tile(Tile(1,7,8), Pos('B3'))
-    
+
     boards[1].place_tile(Tile(9,2,3), Pos('C2'))
-    
+
     boards[1].place_tile(Tile(5,6,8), Pos('D3'))
     boards[1].place_tile(Tile(5,7,8), Pos('D4'))
-    
+
     boards[1].place_tile(Tile(1,6,3), Pos('E2'))
 
     """ board 2
@@ -145,20 +145,20 @@ def half_board(n:int = 1):
 
     boards[2].place_tile(Tile(5,2,8), Pos('A1'))
     boards[2].place_tile(Tile(5,6,4), Pos('A2'))
-    
+
     boards[2].place_tile(Tile(1,2,3), Pos('B1'))
     boards[2].place_tile(Tile(1,7,8), Pos('B3'))
-    
+
     boards[2].place_tile(Tile(9,2,4), Pos('C1'))
     boards[2].place_tile(Tile(9,2,3), Pos('C2'))
     boards[2].place_tile(Tile(9,6,8), Pos('C4'))
     boards[2].place_tile(Tile(9,6,4), Pos('C5'))
-    
+
     boards[2].place_tile(Tile(5,6,8), Pos('D3'))
     boards[2].place_tile(Tile(5,7,8), Pos('D4'))
-    
+
     boards[2].place_tile(Tile(1,6,3), Pos('E2'))
-    
+
     """ board 3
     ****************************************************************
     *                               C                              *
@@ -235,9 +235,9 @@ def half_board(n:int = 1):
     *                                                              *
     ****************************************************************
     """
-    
+
     boards[4] = Board()
-    
+
     boards[4].place_tile(Tile(5,2,8), Pos('A1'))
     boards[4].place_tile(Tile(5,6,4), Pos('A2'))
 
@@ -285,9 +285,9 @@ def half_board(n:int = 1):
     *                                                              *
     ****************************************************************
     """
-    
+
     boards[5] = Board()
-    
+
     boards[5].place_tile(Tile(5,2,8), Pos('A1'))
     boards[5].place_tile(Tile(5,6,4), Pos('A2'))
     boards[5].place_tile(Tile(5,6,3), Pos('A3'))
@@ -295,17 +295,17 @@ def half_board(n:int = 1):
     boards[5].place_tile(Tile(1,2,3), Pos('B1'))
     boards[5].place_tile(Tile(9,2,8), Pos('B2'))
     boards[5].place_tile(Tile(1,7,8), Pos('B3'))
-    
+
     boards[5].place_tile(Tile(9,2,4), Pos('C1'))
     boards[5].place_tile(Tile(9,2,3), Pos('C2'))
     boards[5].place_tile(Tile(9,6,8), Pos('C4'))
     boards[5].place_tile(Tile(9,6,4), Pos('C5'))
-    
+
     boards[5].place_tile(Tile(1,2,4), Pos('D1'))
     boards[5].place_tile(Tile(9,7,3), Pos('D2'))
     boards[5].place_tile(Tile(5,6,8), Pos('D3'))
     boards[5].place_tile(Tile(5,7,8), Pos('D4'))
-    
+
     boards[5].place_tile(Tile(1,7,4), Pos('E1'))
     boards[5].place_tile(Tile(1,6,3), Pos('E2'))
     boards[5].place_tile(Tile(1,6,8), Pos('E3'))
@@ -337,35 +337,84 @@ def half_board(n:int = 1):
     *                                                              *
     ****************************************************************
     """
-    
+
     boards[6] = Board()
-    
+
     boards[6].place_tile(Tile(9,6,8), Pos('A2'))
     boards[6].place_tile(Tile(9,2,8), Pos('A3'))
-    
+
     boards[6].place_tile(Tile(1,6,3), Pos('B1'))
     boards[6].place_tile(Tile(1,2,4), Pos('B3'))
     boards[6].place_tile(Tile(9,7,8), Pos('B4'))
-    
+
     boards[6].place_tile(Tile(9,6,3), Pos('C2'))
     boards[6].place_tile(Tile(9,7,4), Pos('C4'))
     boards[6].place_tile(Tile(1,6,8), Pos('C5'))
-    
+
     boards[6].place_tile(Tile(5,7,8), Pos('D3'))
     boards[6].place_tile(Tile(1,6,4), Pos('D4'))
-    
+
     boards[6].place_tile(Tile(5,7,4), Pos('E1'))
     boards[6].place_tile(Tile(5,7,4), Pos('E2'))
     boards[6].place_tile(Tile(5,6,3), Pos('E3'))
         
-    
+    """ board 7
+    ****************************************************************
+    *                               C                              *
+    *                            _______                           *
+    *                      B    /       \    D                     *
+    *                   _______/         \_______                  *
+    *             A    /       \         /       \    E            *
+    *          _______/         \_______/    5    \_______         *
+    *         /       \         /       \  6   4  /       \        *
+    *        /    5    \_______/    1    \_______/         \       *
+    *        \  7   4  /       \  6   3  /       \         /       *
+    *      1  \_______/    9    \_______/    5    \_______/  1     *
+    *         /       \  6   3  /       \  6   3  /       \        *
+    *        /    5    \_______/    1    \_______/    9    \       *
+    *        \  6   8  /       \  7   3  /       \  2   3  /       *
+    *      2  \_______/    9    \_______/    1    \_______/  2     *
+    *         /       \  2   4  /       \  2   3  /       \        *
+    *        /    5    \_______/    1    \_______/    5    \       *
+    *        \  7   8  /       \  2   4  /       \  2   8  /       *
+    *      3  \_______/    9    \_______/    5    \_______/  3     *
+    *                 \  6   8  /       \  7   3  /                *
+    *               4  \_______/    1    \_______/  4              *
+    *                          \  2   8  /                         *
+    *                        5  \_______/  5                       *
+    *                                                              *
+    ****************************************************************"""
+
+    boards[7] = Board()
+
+    boards[7].place_tile(Tile(5,7,4), Pos('A1'))
+    boards[7].place_tile(Tile(5,6,8), Pos('A2'))
+    boards[7].place_tile(Tile(5,7,8), Pos('A3'))
+
+    boards[7].place_tile(Tile(9,6,3), Pos('B2'))
+    boards[7].place_tile(Tile(9,2,4), Pos('B3'))
+    boards[7].place_tile(Tile(9,6,8), Pos('B4'))
+
+    boards[7].place_tile(Tile(1,6,3), Pos('C2'))
+    boards[7].place_tile(Tile(1,7,3), Pos('C3'))
+    boards[7].place_tile(Tile(1,2,4), Pos('C4'))
+    boards[7].place_tile(Tile(1,2,8), Pos('C5'))
+
+    boards[7].place_tile(Tile(5,6,8), Pos('D1'))
+    boards[7].place_tile(Tile(5,6,3), Pos('D2'))
+    boards[7].place_tile(Tile(1,2,3), Pos('D3'))
+    boards[7].place_tile(Tile(5,7,3), Pos('D4'))
+
+    boards[7].place_tile(Tile(9,2,3), Pos('E2'))
+    boards[7].place_tile(Tile(5,2,8), Pos('E3'))
+
     # select board
         
     return boards[n]
-    
+
     
 class TestScore(unittest.TestCase):
-    
+
     def test_score_1(self):
         board = full_board(1)
         self.assertEqual(board.score(), 137)
@@ -495,7 +544,7 @@ class TestGameScore(unittest.TestCase):
             # board.draw()
         
         self.assertGreater(board.score(), 130)
-    
+
     def test_score_2(self):
         """At least score 130 at depth 2"""
         board = Board()
@@ -536,10 +585,10 @@ class TestGameScore(unittest.TestCase):
             # board.draw()
         
         self.assertGreater(board.score(), 130)
-    
+
 class TestEstimatedScore(unittest.TestCase):
-    
-    def _test_estimated_score(self, board: Board, tolerance:float = 0.1, debug=False):
+
+    def _test_estimated_score(self, board: Board, tolerance:float = 0.1, debug=True):
         
         estimated_score_level_1 = AI.estimated_score(board)
         
@@ -560,32 +609,25 @@ class TestEstimatedScore(unittest.TestCase):
                                msg=f'{round(estimated_score_level_1, 2)} != {round(estimated_score_level_2, 2)}')
 
     def test_1(self):
-        
         self._test_estimated_score(half_board(1))
 
     def test_2(self):
-        
         self._test_estimated_score(half_board(2))
         
-
     def test_3(self):
-        
         self._test_estimated_score(half_board(3))
-        
 
     def test_4(self):
-        
         self._test_estimated_score(half_board(4))
         
-
     def test_5(self):
-        
         self._test_estimated_score(half_board(5))
-        
 
     def test_6(self):
-        
         self._test_estimated_score(half_board(6))
+
+    def test_7(self):
+        self._test_estimated_score(half_board(7))
         
         
 if __name__ == '__main__':
