@@ -66,14 +66,7 @@ def full_board(n:int = 1):
     
     return boards[n]
     
-
-class TestBoard(unittest.TestCase):
     
-    def test_score_1(self):
-        board = full_board(1)
-        self.assertEqual(board.score(), 137)
-
-
 def half_board(n:int = 1):
     boards = {}
     
@@ -121,8 +114,61 @@ def half_board(n:int = 1):
     
     boards[1].place_tile(Tile(1,6,3), Pos('E2'))
 
+    """ board 2
+    ****************************************************************
+    *                               C                              *
+    *                            _______                           *
+    *                      B    /       \    D                     *
+    *                   _______/    9    \_______                  *
+    *             A    /       \  2   4  /       \    E            *
+    *          _______/    1    \_______/         \_______         *
+    *         /       \  2   3  /       \         /       \        *
+    *        /    5    \_______/    9    \_______/         \       *
+    *        \  2   8  /       \  2   3  /       \         /       *
+    *      1  \_______/         \_______/         \_______/  1     *
+    *         /       \         /       \         /       \        *
+    *        /    5    \_______/         \_______/    1    \       *
+    *        \  6   4  /       \         /       \  6   3  /       *
+    *      2  \_______/    1    \_______/    5    \_______/  2     *
+    *         /       \  7   8  /       \  6   8  /       \        *
+    *        /         \_______/    9    \_______/         \       *
+    *        \         /       \  6   8  /       \         /       *
+    *      3  \_______/         \_______/    5    \_______/  3     *
+    *                 \         /       \  7   8  /                *
+    *               4  \_______/    9    \_______/  4              *
+    *                          \  6   4  /                         *
+    *                        5  \_______/  5                       *
+    *                                                              *
+    ****************************************************************
+    """
+
+    boards[2] = Board()
+
+    boards[2].place_tile(Tile(5,2,8), Pos('A1'))
+    boards[2].place_tile(Tile(5,6,4), Pos('A2'))
+    
+    boards[2].place_tile(Tile(1,2,3), Pos('B1'))
+    boards[2].place_tile(Tile(1,7,8), Pos('B3'))
+    
+    boards[2].place_tile(Tile(9,2,4), Pos('C1'))
+    boards[2].place_tile(Tile(9,2,3), Pos('C2'))
+    boards[2].place_tile(Tile(9,6,8), Pos('C4'))
+    boards[2].place_tile(Tile(9,6,4), Pos('C5'))
+    
+    boards[2].place_tile(Tile(5,6,8), Pos('D3'))
+    boards[2].place_tile(Tile(5,7,8), Pos('D4'))
+    
+    boards[2].place_tile(Tile(1,6,3), Pos('E2'))
+    
     return boards[n]
     
+
+class TestBoard(unittest.TestCase):
+    
+    def test_score_1(self):
+        board = full_board(1)
+        self.assertEqual(board.score(), 137)
+
 
 class TestAI(unittest.TestCase):
 
@@ -144,31 +190,7 @@ class TestAI(unittest.TestCase):
 
     def test_placement_2(self):
         """
-        ****************************************************************
-        *                               C                              *
-        *                            _______                           *
-        *                      B    /       \    D                     *
-        *                   _______/    9    \_______                  *
-        *             A    /       \  2   4  /       \    E            *
-        *          _______/    1    \_______/         \_______         *
-        *         /       \  2   3  /       \         /       \        *
-        *        /    5    \_______/    9    \_______/         \       *
-        *        \  2   8  /       \  2   3  /       \         /       *
-        *      1  \_______/         \_______/         \_______/  1     *
-        *         /       \         /       \         /       \        *
-        *        /    5    \_______/         \_______/    1    \       *
-        *        \  6   4  /       \         /       \  6   3  /       *
-        *      2  \_______/    1    \_______/    5    \_______/  2     *
-        *         /       \  7   8  /       \  6   8  /       \        *
-        *        /         \_______/    9    \_______/         \       *
-        *        \         /       \  6   8  /       \         /       *
-        *      3  \_______/         \_______/    5    \_______/  3     *
-        *                 \         /       \  7   8  /                *
-        *               4  \_______/    9    \_______/  4              *
-        *                          \  6   4  /                         *
-        *                        5  \_______/  5                       *
-        *                                                              *
-        ****************************************************************
+        half board 2
         
           _______  
          /       \  
@@ -177,18 +199,7 @@ class TestAI(unittest.TestCase):
          \_______/  
         """
         
-        board = Board()
-        board.place_tile(Tile(5,2,8), Pos('A1'))
-        board.place_tile(Tile(5,6,4), Pos('A2'))
-        board.place_tile(Tile(1,2,3), Pos('B1'))
-        board.place_tile(Tile(1,7,8), Pos('B3'))
-        board.place_tile(Tile(9,2,4), Pos('C1'))
-        board.place_tile(Tile(9,2,3), Pos('C2'))
-        board.place_tile(Tile(9,6,8), Pos('C4'))
-        board.place_tile(Tile(9,6,4), Pos('C5'))
-        board.place_tile(Tile(5,6,8), Pos('D3'))
-        board.place_tile(Tile(5,7,8), Pos('D4'))
-        board.place_tile(Tile(1,6,3), Pos('E2'))
+        board = half_board(2)
         
         suggested_position = AI.get_best_position(board, Tile(9,6,4))
         
