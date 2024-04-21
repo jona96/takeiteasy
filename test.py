@@ -65,8 +65,7 @@ def full_board(n:int = 1):
     boards[1].place_tile(Tile(5,7,3), Pos('E3'))
     
     return boards[n]
-    
-    
+     
 def half_board(n:int = 1):
     boards = {}
     
@@ -364,17 +363,17 @@ def half_board(n:int = 1):
         
     return boards[n]
     
-
-class TestBoard(unittest.TestCase):
+    
+class TestScore(unittest.TestCase):
     
     def test_score_1(self):
         board = full_board(1)
         self.assertEqual(board.score(), 137)
 
 
-class TestAI(unittest.TestCase):
+class TestPlacement(unittest.TestCase):
 
-    def test_placement_1(self):
+    def test_1(self):
         """
         half board 1
           _______  
@@ -390,7 +389,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('D2'))
 
-    def test_placement_2(self):
+    def test_2(self):
         """
         half board 2
           _______  
@@ -406,7 +405,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('B4'))
 
-    def test_placement_3(self):
+    def test_3(self):
         """
         half board 3
           _______  
@@ -422,7 +421,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('D1'))
 
-    def test_placement_4(self):
+    def test_4(self):
         """
         half board 4
           _______  
@@ -438,7 +437,7 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('E1'))
 
-    def test_placement_5(self):
+    def test_5(self):
         """
         half board 5
           _______  
@@ -454,9 +453,10 @@ class TestAI(unittest.TestCase):
         
         self.assertEqual(suggested_position, Pos('B4'))
 
+class TestGameScore(unittest.TestCase):
+
     def test_score_1(self):
         """At least score 130 at depth 2"""
-        return
         board = Board()
         tiles = [
             Tile(5,2,3),
@@ -498,7 +498,6 @@ class TestAI(unittest.TestCase):
     
     def test_score_2(self):
         """At least score 130 at depth 2"""
-        return
         board = Board()
         tiles = [
             Tile(9,2,8),
@@ -538,6 +537,8 @@ class TestAI(unittest.TestCase):
         
         self.assertGreater(board.score(), 130)
     
+class TestEstimatedScore(unittest.TestCase):
+    
     def _test_estimated_score(self, board: Board):
         
         estimated_score_level_1 = AI.estimated_score(board)
@@ -556,32 +557,31 @@ class TestAI(unittest.TestCase):
         self.assertAlmostEqual(1, estimated_score_level_2 / estimated_score_level_1, delta=0.05,
                                msg=f'{round(estimated_score_level_1, 2)} != {round(estimated_score_level_2, 2)}')
 
-    
-    def test_estimated_score_1(self):
+    def test_1(self):
         
         self._test_estimated_score(half_board(1))
 
-    def test_estimated_score_2(self):
+    def test_2(self):
         
         self._test_estimated_score(half_board(2))
         
 
-    def test_estimated_score_3(self):
+    def test_3(self):
         
         self._test_estimated_score(half_board(3))
         
 
-    def test_estimated_score_4(self):
+    def test_4(self):
         
         self._test_estimated_score(half_board(4))
         
 
-    def test_estimated_score_5(self):
+    def test_5(self):
         
         self._test_estimated_score(half_board(5))
         
 
-    def test_estimated_score_6(self):
+    def test_6(self):
         
         self._test_estimated_score(half_board(6))
         
