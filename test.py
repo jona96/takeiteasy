@@ -539,7 +539,7 @@ class TestGameScore(unittest.TestCase):
     
 class TestEstimatedScore(unittest.TestCase):
     
-    def _test_estimated_score(self, board: Board, tolerance:float = 0.1):
+    def _test_estimated_score(self, board: Board, tolerance:float = 0.1, debug=False):
         
         estimated_score_level_1 = AI.estimated_score(board)
         
@@ -553,6 +553,8 @@ class TestEstimatedScore(unittest.TestCase):
             scores_for_tiles[tile] = max(scores_for_positions.values())
         
         estimated_score_level_2 = mean(scores_for_tiles.values())
+        if debug: 
+            print(f'{round(estimated_score_level_1,2)} | {[round(score,2) for score in scores_for_tiles.values()]} -> {round(estimated_score_level_2,2)}')
         
         self.assertAlmostEqual(1, estimated_score_level_2 / estimated_score_level_1, delta=tolerance,
                                msg=f'{round(estimated_score_level_1, 2)} != {round(estimated_score_level_2, 2)}')
