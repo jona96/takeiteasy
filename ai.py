@@ -172,8 +172,7 @@ class AI:
         if level == 0:
             return False
         elif level == 1:
-            if board.calc_one_child(function): return True
-            return False
+            return board.calc_one_child(function)
         elif level >= 2:
             if not any(board.children): raise BreakException()
             best_children = board.sorted_children()
