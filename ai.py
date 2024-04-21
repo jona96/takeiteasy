@@ -179,7 +179,7 @@ class AI:
             best_children = board.sorted_children()
             max_score = best_children[0].score()
             best_children = [child for child in best_children if child.score() > (max_score * 0.9)]
-            if len(best_children) == 1: raise BreakException() # result is pretty clear already
+            if len(best_children) == 1 and len(board.board.open_positions()) > 7: raise BreakException() # result is pretty clear already
             random.shuffle(best_children)
             for position in best_children:
                 for new_tile_board in position.children:
