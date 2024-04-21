@@ -7,6 +7,9 @@ Pos = BoardPosition.from_string
 from tiles import Tile, Tiles
 from game import Game
 
+def empty_board():
+    return Board()
+
 def full_board(n:int = 1):
     boards = {}
 
@@ -746,6 +749,9 @@ class TestEstimatedScore(unittest.TestCase):
         
     def test_9(self):
         self._test_estimated_score(almost_full_board(3))
+        
+    def test_10(self):
+        self._test_estimated_score(empty_board())
         
         
 if __name__ == '__main__':
