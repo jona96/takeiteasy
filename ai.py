@@ -207,7 +207,10 @@ class AI:
                 sys.stdout.write('\r' + '  '.join([f'{child.board.position_of_tile(base_board.new_tile)} ({round(child.score(0), 2)})' for child in base_board.sorted_children()[:5]]))
                 sys.stdout.flush()
             
-        if debug: print(base_board)
+        if debug: 
+            print('')
+            print('')
+            print(base_board)
         return base_board.best_position(tile)
         
 
