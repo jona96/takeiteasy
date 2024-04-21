@@ -151,21 +151,23 @@ class AI:
                         number_list.append(number)
                 if not any(number_list):
                     # calculate propability for each possible number with remaining tiles
+                    calibration_factor = 0.9 # for effects like when a tile is needed in multiple places
                     for number in range(1, 10):
                         remaining_tiles_with_number = [tile for tile in board.remaining_tiles() if getattr(tile, nx) == number]
                         propability = 1.0
                         for i in range(len(group)):
                             propability *= (len(remaining_tiles_with_number) - i) / (len(board.remaining_tiles()) - i) # tiles with num / all tiles
-                        score += number * len(group) * propability
+                        score += number * len(group) * propability * calibration_factor
                 elif all_items_equal(number_list):
                     # so far all number the same
+                    calibration_factor = 0.9 # for effects like when a tile is needed in multiple places
                     number = number_list[0]
                     missing_tiles = len(group) - len(number_list)
                     remaining_tiles_with_number = [tile for tile in board.remaining_tiles() if getattr(tile, nx) == number]
                     propability = 1.0
                     for i in range(missing_tiles):
                         propability *= (len(remaining_tiles_with_number) - i) / (len(board.remaining_tiles()) - i) # tiles with num / all tiles
-                    score += number * len(group) * propability
+                    score += number * len(group) * propability * calibration_factor
                 else:
                     # different tiles -> no way to safe the row
                     score += 0
