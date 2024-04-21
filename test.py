@@ -358,7 +358,14 @@ def half_board(n:int = 1):
     boards[6].place_tile(Tile(5,7,4), Pos('E2'))
     boards[6].place_tile(Tile(5,6,3), Pos('E3'))
         
-    """ board 7
+    # select board
+        
+    return boards[n]
+
+def almost_full_board(n:int = 1):
+    boards = {}
+
+    """ board 1
     ****************************************************************
     *                               C                              *
     *                            _______                           *
@@ -385,28 +392,133 @@ def half_board(n:int = 1):
     *                                                              *
     ****************************************************************"""
 
-    boards[7] = Board()
+    boards[1] = Board()
 
-    boards[7].place_tile(Tile(5,7,4), Pos('A1'))
-    boards[7].place_tile(Tile(5,6,8), Pos('A2'))
-    boards[7].place_tile(Tile(5,7,8), Pos('A3'))
+    boards[1].place_tile(Tile(5,7,4), Pos('A1'))
+    boards[1].place_tile(Tile(5,6,8), Pos('A2'))
+    boards[1].place_tile(Tile(5,7,8), Pos('A3'))
 
-    boards[7].place_tile(Tile(9,6,3), Pos('B2'))
-    boards[7].place_tile(Tile(9,2,4), Pos('B3'))
-    boards[7].place_tile(Tile(9,6,8), Pos('B4'))
+    boards[1].place_tile(Tile(9,6,3), Pos('B2'))
+    boards[1].place_tile(Tile(9,2,4), Pos('B3'))
+    boards[1].place_tile(Tile(9,6,8), Pos('B4'))
 
-    boards[7].place_tile(Tile(1,6,3), Pos('C2'))
-    boards[7].place_tile(Tile(1,7,3), Pos('C3'))
-    boards[7].place_tile(Tile(1,2,4), Pos('C4'))
-    boards[7].place_tile(Tile(1,2,8), Pos('C5'))
+    boards[1].place_tile(Tile(1,6,3), Pos('C2'))
+    boards[1].place_tile(Tile(1,7,3), Pos('C3'))
+    boards[1].place_tile(Tile(1,2,4), Pos('C4'))
+    boards[1].place_tile(Tile(1,2,8), Pos('C5'))
 
-    boards[7].place_tile(Tile(5,6,8), Pos('D1'))
-    boards[7].place_tile(Tile(5,6,3), Pos('D2'))
-    boards[7].place_tile(Tile(1,2,3), Pos('D3'))
-    boards[7].place_tile(Tile(5,7,3), Pos('D4'))
+    boards[1].place_tile(Tile(5,6,8), Pos('D1'))
+    boards[1].place_tile(Tile(5,6,3), Pos('D2'))
+    boards[1].place_tile(Tile(1,2,3), Pos('D3'))
+    boards[1].place_tile(Tile(5,7,3), Pos('D4'))
 
-    boards[7].place_tile(Tile(9,2,3), Pos('E2'))
-    boards[7].place_tile(Tile(5,2,8), Pos('E3'))
+    boards[1].place_tile(Tile(9,2,3), Pos('E2'))
+    boards[1].place_tile(Tile(5,2,8), Pos('E3'))
+
+    """ board 2
+    ****************************************************************
+    *                               C                              *
+    *                            _______                           *
+    *                      B    /       \    D                     *
+    *                   _______/    5    \_______                  *
+    *             A    /       \  2   3  /       \    E            *
+    *          _______/         \_______/    5    \_______         *
+    *         /       \         /       \  6   4  /       \        *
+    *        /    5    \_______/    1    \_______/         \       *
+    *        \  7   4  /       \  6   3  /       \         /       *
+    *      1  \_______/    9    \_______/    5    \_______/  1     *
+    *         /       \  6   3  /       \  6   3  /       \        *
+    *        /    5    \_______/    1    \_______/    9    \       *
+    *        \  6   8  /       \  7   3  /       \  2   3  /       *
+    *      2  \_______/    9    \_______/    1    \_______/  2     *
+    *         /       \  2   4  /       \  2   3  /       \        *
+    *        /    5    \_______/    1    \_______/    5    \       *
+    *        \  7   8  /       \  2   4  /       \  2   8  /       *
+    *      3  \_______/    9    \_______/    5    \_______/  3     *
+    *                 \  6   8  /       \  7   3  /                *
+    *               4  \_______/    1    \_______/  4              *
+    *                          \  2   8  /                         *
+    *                        5  \_______/  5                       *
+    *                                                              *
+    ****************************************************************
+    """
+
+    boards[2] = Board()
+
+    boards[2].place_tile(Tile(5,7,4), Pos('A1'))
+    boards[2].place_tile(Tile(5,6,8), Pos('A2'))
+    boards[2].place_tile(Tile(5,7,8), Pos('A3'))
+
+    boards[2].place_tile(Tile(9,6,3), Pos('B2'))
+    boards[2].place_tile(Tile(9,2,4), Pos('B3'))
+    boards[2].place_tile(Tile(9,6,8), Pos('B4'))
+
+    boards[2].place_tile(Tile(5,2,3), Pos('C1'))
+    boards[2].place_tile(Tile(1,6,3), Pos('C2'))
+    boards[2].place_tile(Tile(1,7,3), Pos('C3'))
+    boards[2].place_tile(Tile(1,2,4), Pos('C4'))
+    boards[2].place_tile(Tile(1,2,8), Pos('C5'))
+
+    boards[2].place_tile(Tile(5,6,8), Pos('D1'))
+    boards[2].place_tile(Tile(5,6,3), Pos('D2'))
+    boards[2].place_tile(Tile(1,2,3), Pos('D3'))
+    boards[2].place_tile(Tile(5,7,3), Pos('D4'))
+
+    boards[2].place_tile(Tile(9,2,3), Pos('E2'))
+    boards[2].place_tile(Tile(5,2,8), Pos('E3'))
+
+    """ board 3
+    ****************************************************************
+    *                               C                              *
+    *                            _______                           *
+    *                      B    /       \    D                     *
+    *                   _______/    5    \_______                  *
+    *             A    /       \  2   3  /       \    E            *
+    *          _______/         \_______/    5    \_______         *
+    *         /       \         /       \  6   4  /       \        *
+    *        /    5    \_______/    1    \_______/    5    \       *
+    *        \  7   4  /       \  6   3  /       \  2   4  /       *
+    *      1  \_______/    9    \_______/    5    \_______/  1     *
+    *         /       \  6   3  /       \  6   3  /       \        *
+    *        /    5    \_______/    1    \_______/    9    \       *
+    *        \  6   8  /       \  7   3  /       \  2   3  /       *
+    *      2  \_______/    9    \_______/    1    \_______/  2     *
+    *         /       \  2   4  /       \  2   3  /       \        *
+    *        /    5    \_______/    1    \_______/    5    \       *
+    *        \  7   8  /       \  2   4  /       \  2   8  /       *
+    *      3  \_______/    9    \_______/    5    \_______/  3     *
+    *                 \  6   8  /       \  7   3  /                *
+    *               4  \_______/    1    \_______/  4              *
+    *                          \  2   8  /                         *
+    *                        5  \_______/  5                       *
+    *                                                              *
+    ****************************************************************
+    """
+
+    boards[3] = Board()
+
+    boards[3].place_tile(Tile(5,7,4), Pos('A1'))
+    boards[3].place_tile(Tile(5,6,8), Pos('A2'))
+    boards[3].place_tile(Tile(5,7,8), Pos('A3'))
+
+    boards[3].place_tile(Tile(9,6,3), Pos('B2'))
+    boards[3].place_tile(Tile(9,2,4), Pos('B3'))
+    boards[3].place_tile(Tile(9,6,8), Pos('B4'))
+
+    boards[3].place_tile(Tile(5,2,3), Pos('C1'))
+    boards[3].place_tile(Tile(1,6,3), Pos('C2'))
+    boards[3].place_tile(Tile(1,7,3), Pos('C3'))
+    boards[3].place_tile(Tile(1,2,4), Pos('C4'))
+    boards[3].place_tile(Tile(1,2,8), Pos('C5'))
+
+    boards[3].place_tile(Tile(5,6,8), Pos('D1'))
+    boards[3].place_tile(Tile(5,6,3), Pos('D2'))
+    boards[3].place_tile(Tile(1,2,3), Pos('D3'))
+    boards[3].place_tile(Tile(5,7,3), Pos('D4'))
+
+    boards[3].place_tile(Tile(5,2,4), Pos('E1'))
+    boards[3].place_tile(Tile(9,2,3), Pos('E2'))
+    boards[3].place_tile(Tile(5,2,8), Pos('E3'))
 
     # select board
         
@@ -627,7 +739,13 @@ class TestEstimatedScore(unittest.TestCase):
         self._test_estimated_score(half_board(6))
 
     def test_7(self):
-        self._test_estimated_score(half_board(7))
+        self._test_estimated_score(almost_full_board(1))
+        
+    def test_8(self):
+        self._test_estimated_score(almost_full_board(2))
+        
+    def test_9(self):
+        self._test_estimated_score(almost_full_board(3))
         
         
 if __name__ == '__main__':
