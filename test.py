@@ -1,3 +1,5 @@
+from copy import copy
+from statistics import mean
 import unittest
 from ai import AI
 from board import Board, BoardPosition
@@ -431,5 +433,122 @@ class TestAI(unittest.TestCase):
         
         self.assertGreater(board.score(), 130)
     
+    def test_estimated_score_1(self):
+        """
+        ****************************************************************
+        *                               C                              *
+        *                            _______                           *
+        *                      B    /       \    D                     *
+        *                   _______/         \_______                  *
+        *             A    /       \         /       \    E            *
+        *          _______/    1    \_______/         \_______         *
+        *         /       \  2   3  /       \         /       \        *
+        *        /    5    \_______/    9    \_______/         \       *
+        *        \  2   8  /       \  2   3  /       \         /       *
+        *      1  \_______/         \_______/         \_______/  1     *
+        *         /       \         /       \         /       \        *
+        *        /    5    \_______/         \_______/    1    \       *
+        *        \  6   4  /       \         /       \  6   3  /       *
+        *      2  \_______/    1    \_______/    5    \_______/  2     *
+        *         /       \  7   8  /       \  6   8  /       \        *
+        *        /         \_______/         \_______/         \       *
+        *        \         /       \         /       \         /       *
+        *      3  \_______/         \_______/    5    \_______/  3     *
+        *                 \         /       \  7   8  /                *
+        *               4  \_______/         \_______/  4              *
+        *                          \         /                         *
+        *                        5  \_______/  5                       *
+        *                                                              *
+        ****************************************************************
+        """
+        
+        board = Board()
+        board.place_tile(Tile(5,2,8), Pos('A1'))
+        board.place_tile(Tile(5,6,4), Pos('A2'))
+        board.place_tile(Tile(1,2,3), Pos('B1'))
+        board.place_tile(Tile(1,7,8), Pos('B3'))
+        board.place_tile(Tile(9,2,3), Pos('C2'))
+        board.place_tile(Tile(5,6,8), Pos('D3'))
+        board.place_tile(Tile(5,7,8), Pos('D4'))
+        board.place_tile(Tile(1,6,3), Pos('E2'))
+        
+        estimated_score_level_1 = AI.estimated_score(board)
+        
+        scores_for_tiles = {}
+        for tile in board.remaining_tiles():
+            scores_for_positions = {}
+            for position in board.open_positions():
+                new_board = copy(board)
+                new_board.place_tile(tile, position)
+                scores_for_positions[position] = AI.estimated_score(new_board)
+            scores_for_tiles[tile] = max(scores_for_positions.values())
+        
+        estimated_score_level_2 = mean(scores_for_tiles.values())
+        
+        self.assertAlmostEqual(1, estimated_score_level_2 / estimated_score_level_1, delta=0.05,
+                               msg=f'{round(estimated_score_level_1, 2)} != {round(estimated_score_level_2, 2)}')
+
+    def test_estimated_score_2(self):
+        """
+        ****************************************************************
+        *                               C                              *
+        *                            _______                           *
+        *                      B    /       \    D                     *
+        *                   _______/         \_______                  *
+        *             A    /       \         /       \    E            *
+        *          _______/    1    \_______/         \_______         *
+        *         /       \  6   3  /       \         /       \        *
+        *        /         \_______/    9    \_______/    5    \       *
+        *        \         /       \  6   3  /       \  7   4  /       *
+        *      1  \_______/         \_______/         \_______/  1     *
+        *         /       \         /       \         /       \        *
+        *        /    9    \_______/         \_______/    5    \       *
+        *        \  6   4  /       \         /       \  7   3  /       *
+        *      2  \_______/    1    \_______/    5    \_______/  2     *
+        *         /       \  2   4  /       \  7   8  /       \        *
+        *        /    9    \_______/    9    \_______/    5    \       *
+        *        \  2   8  /       \  7   4  /       \  6   3  /       *
+        *      3  \_______/    9    \_______/    1    \_______/  3     *
+        *                 \  7   8  /       \  6   4  /                *
+        *               4  \_______/    1    \_______/  4              *
+        *                          \  6   8  /                         *
+        *                        5  \_______/  5                       *
+        *                                                              *
+        ****************************************************************
+        """
+        
+        board = Board()
+        board.place_tile(Tile(9,6,8), Pos('A2'))
+        board.place_tile(Tile(9,2,8), Pos('A3'))
+        board.place_tile(Tile(1,6,3), Pos('B1'))
+        board.place_tile(Tile(1,2,4), Pos('B3'))
+        board.place_tile(Tile(9,7,8), Pos('B4'))
+        board.place_tile(Tile(9,6,3), Pos('C2'))
+        board.place_tile(Tile(9,7,4), Pos('C4'))
+        board.place_tile(Tile(1,6,8), Pos('C5'))
+        board.place_tile(Tile(5,7,8), Pos('D3'))
+        board.place_tile(Tile(1,6,4), Pos('D4'))
+        board.place_tile(Tile(5,7,4), Pos('E1'))
+        board.place_tile(Tile(5,7,4), Pos('E2'))
+        board.place_tile(Tile(5,6,3), Pos('E3'))
+        
+        estimated_score_level_1 = AI.estimated_score(board)
+        
+        scores_for_tiles = {}
+        for tile in board.remaining_tiles():
+            scores_for_positions = {}
+            for position in board.open_positions():
+                new_board = copy(board)
+                new_board.place_tile(tile, position)
+                scores_for_positions[position] = AI.estimated_score(new_board)
+            scores_for_tiles[tile] = max(scores_for_positions.values())
+        
+        estimated_score_level_2 = mean(scores_for_tiles.values())
+        
+        self.assertAlmostEqual(1, estimated_score_level_2 / estimated_score_level_1, delta=0.05,
+                               msg=f'{round(estimated_score_level_1, 2)} != {round(estimated_score_level_2, 2)}')
+
+        
+        
 if __name__ == '__main__':
     unittest.main()
