@@ -152,15 +152,19 @@ class AI:
                     # calculate propability for each possible number with remaining tiles
                     for number in range(1, 10):
                         remaining_tiles_with_number = [tile for tile in board.remaining_tiles() if getattr(tile, nx) == number]
-                        propability_factor = (len(remaining_tiles_with_number) / len(board.remaining_tiles())) ** len(group)  # todo: Wahrscheinlichkeit ohne zurücklegen mit ! berechnen
-                        score += number * len(group) * propability_factor
+                        propability = 1.0
+                        for i in range(len(group)):
+                            propability *= (len(remaining_tiles_with_number) - i) / (len(board.remaining_tiles()) - i) # tiles with num / all tiles
+                        score += number * len(group) * propability
                 elif all_items_equal(number_list):
                     # so far all number the same
                     number = number_list[0]
                     missing_tiles = len(group) - len(number_list)
                     remaining_tiles_with_number = [tile for tile in board.remaining_tiles() if getattr(tile, nx) == number]
-                    propability_factor = (len(remaining_tiles_with_number) / len(board.remaining_tiles())) ** missing_tiles  # todo: Wahrscheinlichkeit ohne zurücklegen mit ! berechnen
-                    score += number * len(group) * propability_factor
+                    propability = 1.0
+                    for i in range(len(group)):
+                        propability *= (len(remaining_tiles_with_number) - i) / (len(board.remaining_tiles()) - i) # tiles with num / all tiles
+                    score += number * len(group) * propability
                 else:
                     # different tiles -> no way to safe the row
                     score += 0
