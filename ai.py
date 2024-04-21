@@ -170,11 +170,11 @@ class AI:
     @staticmethod
     def calc_one(board: ScoreNodeNewRandomTile, level: int, function) -> bool:
         if level == 0:
-            return False
+            return False # no need to calc root
         elif level == 1:
             return board.calc_one_child(function)
         elif level >= 2:
-            if not any(board.children): raise BreakException()
+            if not any(board.children): raise BreakException() # finished
             best_children = board.sorted_children()
             max_score = best_children[0].score()
             best_children = [child for child in best_children if child.score() > (max_score * 0.9)]
