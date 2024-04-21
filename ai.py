@@ -160,7 +160,7 @@ class AI:
                                 # not enough tiles with number to complete full group
                                 propability = 0
                                 continue
-                            assert i >= len(board.remaining_tiles()), 'should be catched by above check'
+                            assert i < len(board.remaining_tiles()), f'should be catched by above check i={i} remaining_tiles={len(board.remaining_tiles())}'
                             propability *= (len(remaining_tiles_with_number) - i) / (len(board.remaining_tiles()) - i) # tiles with num / all tiles
                         score += number * len(group) * propability * calibration_factor
                 elif all_items_equal(number_list):
