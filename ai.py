@@ -133,6 +133,7 @@ class AI:
     @cache
     @staticmethod
     def estimated_score(board: Board) -> float:
+        # TODO: list -> sets
         if board.open_positions() == 0:
             return board.score()
         
@@ -162,7 +163,7 @@ class AI:
                     missing_tiles = len(group) - len(number_list)
                     remaining_tiles_with_number = [tile for tile in board.remaining_tiles() if getattr(tile, nx) == number]
                     propability = 1.0
-                    for i in range(len(group)):
+                    for i in range(missing_tiles):
                         propability *= (len(remaining_tiles_with_number) - i) / (len(board.remaining_tiles()) - i) # tiles with num / all tiles
                     score += number * len(group) * propability
                 else:
