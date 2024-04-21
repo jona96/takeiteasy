@@ -7,62 +7,71 @@ Pos = BoardPosition.from_string
 from tiles import Tile, Tiles
 from game import Game
 
+def full_board(n:int = 1):
+    boards = {}
+    
+    """ board 1
+    ****************************************************************
+    *                               C                              *
+    *                            _______                           *
+    *                      B    /       \    D                     *
+    *                   _______/    1    \_______                  *
+    *             A    /       \  6   3  /       \    E            *
+    *          _______/    5    \_______/    1    \_______         *
+    *         /       \  6   8  /       \  2   3  /       \        *
+    *        /    9    \_______/    1    \_______/    5    \       *
+    *        \  7   3  /       \  2   8  /       \  2   3  /       *
+    *      1  \_______/    5    \_______/    1    \_______/  1     *
+    *         /       \  2   8  /       \  6   8  /       \        *
+    *        /    9    \_______/    9    \_______/    5    \       *
+    *        \  2   4  /       \  6   4  /       \  7   8  /       *
+    *      2  \_______/    1    \_______/    1    \_______/  2     *
+    *         /       \  2   4  /       \  7   8  /       \        *
+    *        /    9    \_______/    1    \_______/    5    \       *
+    *        \  2   3  /       \  7   4  /       \  7   3  /       *
+    *      3  \_______/    5    \_______/    5    \_______/  3     *
+    *                 \  6   3  /       \  7   4  /                *
+    *               4  \_______/    1    \_______/  4              *
+    *                          \  7   3  /                         *
+    *                        5  \_______/  5                       *
+    *                                                              *
+    ****************************************************************
+    """
+
+    boards[1] = Board()
+    
+    boards[1].place_tile(Tile(9,7,3), Pos('A1'))
+    boards[1].place_tile(Tile(9,2,4), Pos('A2'))
+    boards[1].place_tile(Tile(9,2,3), Pos('A3'))
+    
+    boards[1].place_tile(Tile(5,6,8), Pos('B1'))
+    boards[1].place_tile(Tile(5,2,8), Pos('B2'))
+    boards[1].place_tile(Tile(1,2,4), Pos('B3'))
+    boards[1].place_tile(Tile(5,6,3), Pos('B4'))
+    
+    boards[1].place_tile(Tile(1,6,3), Pos('C1'))
+    boards[1].place_tile(Tile(1,2,8), Pos('C2'))
+    boards[1].place_tile(Tile(9,6,4), Pos('C3'))
+    boards[1].place_tile(Tile(1,7,4), Pos('C4'))
+    boards[1].place_tile(Tile(1,7,3), Pos('C5'))
+    
+    boards[1].place_tile(Tile(1,2,3), Pos('D1'))
+    boards[1].place_tile(Tile(1,6,8), Pos('D2'))
+    boards[1].place_tile(Tile(1,7,8), Pos('D3'))
+    boards[1].place_tile(Tile(5,7,4), Pos('D4'))
+    
+    boards[1].place_tile(Tile(5,2,3), Pos('E1'))
+    boards[1].place_tile(Tile(5,7,8), Pos('E2'))
+    boards[1].place_tile(Tile(5,7,3), Pos('E3'))
+    
+    assert n in boards.keys()
+    return boards[n]
+    
+
 class TestBoard(unittest.TestCase):
     
     def test_score_1(self):
-        """
-        ****************************************************************
-        *                               C                              *
-        *                            _______                           *
-        *                      B    /       \    D                     *
-        *                   _______/    1    \_______                  *
-        *             A    /       \  6   3  /       \    E            *
-        *          _______/    5    \_______/    1    \_______         *
-        *         /       \  6   8  /       \  2   3  /       \        *
-        *        /    9    \_______/    1    \_______/    5    \       *
-        *        \  7   3  /       \  2   8  /       \  2   3  /       *
-        *      1  \_______/    5    \_______/    1    \_______/  1     *
-        *         /       \  2   8  /       \  6   8  /       \        *
-        *        /    9    \_______/    9    \_______/    5    \       *
-        *        \  2   4  /       \  6   4  /       \  7   8  /       *
-        *      2  \_______/    1    \_______/    1    \_______/  2     *
-        *         /       \  2   4  /       \  7   8  /       \        *
-        *        /    9    \_______/    1    \_______/    5    \       *
-        *        \  2   3  /       \  7   4  /       \  7   3  /       *
-        *      3  \_______/    5    \_______/    5    \_______/  3     *
-        *                 \  6   3  /       \  7   4  /                *
-        *               4  \_______/    1    \_______/  4              *
-        *                          \  7   3  /                         *
-        *                        5  \_______/  5                       *
-        *                                                              *
-        ****************************************************************
-        """
-        board = Board()
-        
-        board.place_tile(Tile(9,7,3), Pos('A1'))
-        board.place_tile(Tile(9,2,4), Pos('A2'))
-        board.place_tile(Tile(9,2,3), Pos('A3'))
-        
-        board.place_tile(Tile(5,6,8), Pos('B1'))
-        board.place_tile(Tile(5,2,8), Pos('B2'))
-        board.place_tile(Tile(1,2,4), Pos('B3'))
-        board.place_tile(Tile(5,6,3), Pos('B4'))
-        
-        board.place_tile(Tile(1,6,3), Pos('C1'))
-        board.place_tile(Tile(1,2,8), Pos('C2'))
-        board.place_tile(Tile(9,6,4), Pos('C3'))
-        board.place_tile(Tile(1,7,4), Pos('C4'))
-        board.place_tile(Tile(1,7,3), Pos('C5'))
-        
-        board.place_tile(Tile(1,2,3), Pos('D1'))
-        board.place_tile(Tile(1,6,8), Pos('D2'))
-        board.place_tile(Tile(1,7,8), Pos('D3'))
-        board.place_tile(Tile(5,7,4), Pos('D4'))
-        
-        board.place_tile(Tile(5,2,3), Pos('E1'))
-        board.place_tile(Tile(5,7,8), Pos('E2'))
-        board.place_tile(Tile(5,7,3), Pos('E3'))
-        
+        board = full_board(1)
         self.assertEqual(board.score(), 137)
 
 class TestAI(unittest.TestCase):
